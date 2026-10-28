@@ -1,0 +1,24 @@
+<aside class="gauge-panel">
+  <h2 class="gauge-panel__title">Ta journée</h2>
+
+  @for (definition of definitions; track definition.key) {
+    @let value = gauges[definition.key];
+    <div class="gauge-panel__gauge">
+      <div class="gauge-panel__label">
+        <span>{{ definition.emoji }} {{ definition.label }}</span>
+        <strong>{{ value }}</strong>
+        @if (lastEffects && lastEffects[definition.key] !== 0) {
+          @let effect = lastEffects[definition.key];
+          @for (key of [round]; track key) {
+            <span class="gauge-panel__delta" [class.gauge-panel__delta--negative]="effect < 0">
+              {{ effect > 0 ? '+' : '' }}{{ effect }}
+            </span>
+          }
+        }
+      </div>
+      <div class="gauge-panel__track">
+        <div class="gauge-panel__fill" [class]="'gauge-panel__fill--' + level(value)" [style.width.%]="value"></div>
+      </div>
+    </div>
+  }
+</aside>

@@ -1,0 +1,45 @@
+<main class="crud-test">
+  <h1>Test du CRUD (favoris)</h1>
+
+  @if (lastAction()) {
+    <p class="crud-test__success">✅ {{ lastAction() }}</p>
+  }
+  @if (error()) {
+    <p class="crud-test__error">❌ {{ error() }}</p>
+  }
+
+  <section class="crud-test__card">
+    <header class="crud-test__header">
+      <h2>Offres Adzuna</h2>
+      <button type="button" [disabled]="loading()" (click)="loadOffers()">
+        {{ loading() ? 'Chargement…' : 'Charger des offres' }}
+      </button>
+    </header>
+
+    @for (offer of offers(); track offer.id) {
+      <div class="crud-test__offer">
+        <span>{{ offer.title }} — {{ offer.company }}</span>
+        <button type="button" [disabled]="isFavorite(offer)" (click)="addFavorite(offer)">
+          {{ isFavorite(offer) ? 'Déjà en favori' : 'Ajouter (POST)' }}
+        </button>
+      </div>
+    }
+  </section>
+
+  <section class="crud-test__card">
+    <header class="crud-test__header">
+      <h2>Mes favoris ({{ favorites().length }})</h2>
+      <button type="button" (click)="loadFavorites()">Recharger (GET)</button>
+    </header>
+
+    @for (favorite of favorites(); track favorite.id) {
+      <app-favorite-item
+        [favorite]="favorite"
+        (noteSaved)="updateNote(favorite, $event)"
+        (deleted)="deleteFavorite(favorite)"
+      />
+    } @empty {
+      <p>Aucun favori pour l'instant. Ajoute une offre ci-dessus.</p>
+    }
+  </section>
+</main>

@@ -1,0 +1,76 @@
+.gauge-panel {
+  &__title {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  &__gauge {
+    margin-bottom: 14px;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+
+    strong {
+      margin-left: auto;
+    }
+  }
+
+  &__track {
+    height: 10px;
+    border-radius: 5px;
+    background: #eee;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.8s ease, background-color 0.8s ease;
+
+    &--high {
+      background: #2e7d32;
+    }
+
+    &--medium {
+      background: #ef8f00;
+    }
+
+    &--low {
+      background: #c62828;
+    }
+  }
+
+  &__delta {
+    font-weight: bold;
+    color: #2e7d32;
+    animation: gauge-delta 2s ease-out forwards;
+
+    &--negative {
+      color: #c62828;
+    }
+  }
+}
+
+@keyframes gauge-delta {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

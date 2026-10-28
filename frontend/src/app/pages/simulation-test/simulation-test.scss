@@ -1,0 +1,94 @@
+.simulation-test {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: system-ui, sans-serif;
+
+  &__card {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  &__setup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+
+  &__error {
+    color: #c62828;
+  }
+
+  &__notification {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+    animation: notification-in 0.3s ease-out;
+  }
+}
+
+.workplace {
+  display: grid;
+  grid-template-columns: 200px 1fr 240px;
+  grid-template-areas:
+    'bar bar bar'
+    'contacts chat gauges';
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'bar' 'gauges' 'chat' 'contacts';
+  }
+
+  &__bar {
+    grid-area: bar;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+
+    small {
+      margin-left: auto;
+      color: #666;
+    }
+  }
+
+  &__contacts {
+    grid-area: contacts;
+  }
+
+  &__chat {
+    grid-area: chat;
+  }
+
+  &__gauges {
+    grid-area: gauges;
+  }
+}
+
+@keyframes notification-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}

@@ -1,0 +1,39 @@
+<section class="result-card">
+  <header class="result-card__header">
+    <p class="result-card__score">{{ analysis.data.score }}<small>/100</small></p>
+    <div>
+      <h2>{{ analysis.data.title }}</h2>
+      <p class="result-card__meta">Analyse par {{ analysis.provider }} en {{ analysis.durationMs }} ms</p>
+    </div>
+  </header>
+
+  <div class="result-card__body">
+    <div>
+      <h3>Tes points forts</h3>
+      <ul>
+        @for (strength of analysis.data.strengths; track strength) {
+          <li>{{ strength }}</li>
+        }
+      </ul>
+
+      <h3>Conseil</h3>
+      <p>{{ analysis.data.advice }}</p>
+
+      <h3>Ta journée</h3>
+      <ol>
+        @for (exchange of exchanges; track $index) {
+          <li>
+            <strong>{{ exchange.characterRole }}</strong> : {{ exchange.message }}
+            <br />
+            <em>{{ exchange.timedOut ? '⏰ Pas de réponse à temps' : '« ' + exchange.playerReply + ' »' }}</em>
+            <small> 💡 {{ exchange.skill }}</small>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <app-gauge-panel [gauges]="gauges" />
+  </div>
+
+  <button type="button" (click)="restart.emit()">Rejouer</button>
+</section>

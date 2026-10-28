@@ -1,0 +1,100 @@
+<main class="simulation-test">
+  @if (notification()) {
+    <div class="simulation-test__notification" role="status">{{ notification() }}</div>
+  }
+
+  @if (error()) {
+    <p class="simulation-test__error">❌ {{ error() }}</p>
+  }
+
+  @switch (step()) {
+    @case ('setup') {
+      <h1>Ta journée dans la peau d'un pro</h1>
+      <p>
+        Ton équipe va t'écrire sur la messagerie de l'entreprise. Réponds comme tu le ferais vraiment :
+        chaque réponse fait bouger les jauges de ta journée. Attention aux messages urgents ⏰.
+      </p>
+      <form class="simulation-test__card simulation-test__setup" [formGroup]="setupForm" (ngSubmit)="start()">
+        <label>
+          Métier
+          <select formControlName="jobTitle">
+            @for (jobTitle of jobTitles; track jobTitle) {
+              <option [value]="jobTitle">{{ jobTitle }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          IA
+          <select formControlName="provider">
+            @for (option of providerOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </label>
+        <button type="submit" [disabled]="setupForm.invalid">Commencer la journée</button>
+      </form>
+    }
+
+    @case ('generating') {
+      <p class="simulation-test__card">⏳ Ton équipe arrive au bureau…</p>
+    }
+
+    @case ('result') {
+      @if (analysis(); as analysis) {
+        <div class="simulation-test__card">
+          <app-result-card [analysis]="analysis" [gauges]="gauges()" [exchanges]="exchanges()" (restart)="restart()" />
+        </div>
+      }
+    }
+
+    @default {
+      <div class="workplace">
+        <header class="workplace__bar">
+          <strong>💼 {{ setupForm.controls.jobTitle.value }}</strong>
+          <span>🕘 {{ currentEvent()?.time }}</span>
+          <span>Message {{ eventIndex() + 1 }} / {{ events().length }}</span>
+          @if (day(); as day) {
+            <small>Journée écrite par {{ day.provider }} en {{ day.durationMs }} ms</small>
+          }
+        </header>
+
+        <app-contact-list
+          class="workplace__contacts"
+          [characters]="characters()"
+          [activeCharacterId]="currentCharacter()?.id ?? null"
+          [typingCharacterId]="typingCharacter()?.id ?? null"
+        />
+
+        <app-chat-window
+          class="workplace__chat"
+          [messages]="messages()"
+          [characters]="characters()"
+          [typingCharacter]="typingCharacter()"
+          [canReply]="canReply() && step() === 'playing'"
+          (replySent)="sendReply($event)"
+        >
+          @if (canReply() && currentEvent()?.urgent) {
+            <app-countdown chatAlert [seconds]="urgentSeconds" (expired)="onTimeout()" />
+          }
+        </app-chat-window>
+
+        <app-gauge-panel
+          class="workplace__gauges"
+          [gauges]="gauges()"
+          [lastEffects]="lastEffects()"
+          [round]="exchanges().length"
+        />
+      </div>
+
+      @if (step() === 'analyzing') {
+        <div class="simulation-test__card">
+          @if (error()) {
+            <button type="button" (click)="analyze()">Réessayer l'analyse</button>
+          } @else {
+            <p>⏳ Fin de journée : l'IA analyse tes {{ exchanges().length }} réponses…</p>
+          }
+        </div>
+      }
+    }
+  }
+</main>

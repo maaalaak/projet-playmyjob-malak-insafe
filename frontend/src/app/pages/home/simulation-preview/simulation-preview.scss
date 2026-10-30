@@ -1,0 +1,58 @@
+.preview {
+  padding: 32px;
+  border-radius: 24px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+
+  @media (max-width: 800px) {
+    padding: 24px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  &__job {
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
+  &__patient {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  &__avatar {
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+
+  &__speech {
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--color-background);
+    color: var(--color-primary);
+  }
+
+  &__question {
+    font-weight: 600;
+  }
+
+  &__choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 8px 16px;
+      border: 1px solid var(--color-accent);
+      border-radius: 24px;
+      font-size: 0.875rem;
+    }
+  }
+}

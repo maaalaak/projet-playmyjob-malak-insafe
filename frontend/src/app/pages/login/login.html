@@ -1,0 +1,25 @@
+<main class="login">
+  <h1>Connexion</h1>
+
+  <form class="login__form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" autocomplete="email" formControlName="email" />
+      @if (form.controls.email.hasError('required')) {
+        <mat-error>L'email est requis.</mat-error>
+      } @else if (form.controls.email.hasError('email')) {
+        <mat-error>L'email n'est pas valide.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" autocomplete="current-password" formControlName="password" />
+      <mat-error>Le mot de passe est requis.</mat-error>
+    </mat-form-field>
+
+    <button matButton="filled" type="submit" [disabled]="form.invalid">Se connecter</button>
+  </form>
+
+  <p>Pas encore de compte ? <a routerLink="/register">Inscris-toi</a></p>
+</main>

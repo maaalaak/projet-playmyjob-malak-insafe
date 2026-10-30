@@ -1,3 +1,47 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$blue-palette,
+        tertiary: mat.$orange-palette,
+        theme-type: light,
+      ),
+      typography: Inter,
+      density: 0,
+    )
+  );
+
+  @include mat.theme-overrides(
+    (
+      primary: #1f2a5a,
+      on-primary: #ffffff,
+      surface: #fff8ef,
+      on-surface: #1f2a5a,
+    )
+  );
+
+  --color-primary: #1f2a5a;
+  --color-accent: #ff6b4a;
+  --color-background: #fff8ef;
+  --color-text-muted: #5b6178;
+  --color-border: #e8dfd2;
+  --font-display: 'Fraunces', serif;
+}
+
 body {
   margin: 0;
+  background: var(--color-background);
+  color: var(--color-primary);
+  font: var(--mat-sys-body-large);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.2;
 }

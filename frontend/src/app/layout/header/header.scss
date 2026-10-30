@@ -4,29 +4,41 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px 24px;
-  padding: 12px 24px;
-  border-bottom: 1px solid #ddd;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
 
   &__logo {
-    font-size: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #222;
+    color: var(--color-primary);
     text-decoration: none;
+
+    span {
+      color: var(--color-accent);
+    }
   }
 
   &__nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 24px;
   }
 
   &__link {
-    color: #555;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    color: var(--color-text-muted);
     text-decoration: none;
 
+    &:hover,
     &--active {
-      color: #222;
-      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    &--active {
+      border-bottom-color: var(--color-accent);
     }
   }
 }

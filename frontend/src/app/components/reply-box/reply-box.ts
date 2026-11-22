@@ -2,7 +2,7 @@ import { Component, effect, input, InputSignal, output, OutputEmitterRef, signal
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { interval, Subscription, take } from 'rxjs';
-import { ReplyForm } from '../../../interfaces/reply-form';
+import { ReplyForm } from '../../interfaces/reply-form';
 
 const URGENT_SECONDS: number = 45;
 const CRITICAL_SECONDS: number = 10;

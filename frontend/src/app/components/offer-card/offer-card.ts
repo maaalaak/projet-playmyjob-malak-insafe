@@ -1,6 +1,6 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Offer } from '../../../interfaces/offer';
+import { Offer } from '../../interfaces/offer';
 import { ContractLabelPipe } from '../../pipes/contract-label-pipe';
 import { SalaryRangePipe } from '../../pipes/salary-range-pipe';
 

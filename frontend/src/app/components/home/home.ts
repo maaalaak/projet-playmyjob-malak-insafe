@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SimulationPreview } from './simulation-preview/simulation-preview';
+import { SimulationPreview } from '../simulation-preview/simulation-preview';
 
 @Component({
   imports: [MatButtonModule, RouterLink, SimulationPreview],

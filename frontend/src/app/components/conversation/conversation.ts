@@ -1,6 +1,6 @@
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
-import { ChatMessage } from '../../../interfaces/chat-message';
-import { Character } from '../../../interfaces/scenario';
+import { ChatMessage } from '../../interfaces/chat-message';
+import { Character } from '../../interfaces/scenario';
 
 @Component({
   selector: 'app-conversation',

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiError } from '../../interfaces/api-error';
+import { ApiError } from '../interfaces/api-error';
 
 function isApiError(body: unknown): body is ApiError {
   return typeof body === 'object' && body !== null && typeof (body as ApiError).message === 'string';

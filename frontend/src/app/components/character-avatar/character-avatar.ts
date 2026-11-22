@@ -1,5 +1,5 @@
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
-import { Character, Mood } from '../../../interfaces/scenario';
+import { Character, Mood } from '../../interfaces/scenario';
 
 const MOOD_ICONS: Readonly<Record<Mood, string>> = { content: '😊', neutre: '😐', inquiet: '😟', agace: '😠' };
 const MOOD_LABELS: Readonly<Record<Mood, string>> = {

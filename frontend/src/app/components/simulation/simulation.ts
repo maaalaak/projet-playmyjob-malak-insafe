@@ -7,14 +7,14 @@ import { ChatMessage } from '../../interfaces/chat-message';
 import { Character, DayEvent, Mood } from '../../interfaces/scenario';
 import { Exchange, GaugeEffects, Simulation } from '../../interfaces/simulation';
 import { SimulationService } from '../../services/simulation-service';
-import { ErrorMessage } from '../../shared/components/error-message/error-message';
-import { GaugePanel } from '../../shared/components/gauge-panel/gauge-panel';
-import { Loader } from '../../shared/components/loader/loader';
-import { httpErrorMessage } from '../../shared/utils/http-error-message';
-import { CharacterAvatar } from './character-avatar/character-avatar';
-import { Conversation } from './conversation/conversation';
-import { ReplyBox } from './reply-box/reply-box';
-import { WorkDocument } from './work-document/work-document';
+import { ErrorMessage } from '../error-message/error-message';
+import { GaugePanel } from '../gauge-panel/gauge-panel';
+import { Loader } from '../loader/loader';
+import { httpErrorMessage } from '../../utils/http-error-message';
+import { CharacterAvatar } from '../character-avatar/character-avatar';
+import { Conversation } from '../conversation/conversation';
+import { ReplyBox } from '../reply-box/reply-box';
+import { WorkDocument } from '../work-document/work-document';
 
 type SimulationStep = 'starting' | 'intro' | 'playing' | 'finishing';
 

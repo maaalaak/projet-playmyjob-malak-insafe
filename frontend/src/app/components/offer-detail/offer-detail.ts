@@ -6,11 +6,11 @@ import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { catchError, map, merge, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { Offer } from '../../interfaces/offer';
 import { OfferService } from '../../services/offer-service';
-import { ErrorMessage } from '../../shared/components/error-message/error-message';
-import { Loader } from '../../shared/components/loader/loader';
-import { ContractLabelPipe } from '../../shared/pipes/contract-label-pipe';
-import { SalaryRangePipe } from '../../shared/pipes/salary-range-pipe';
-import { httpErrorMessage } from '../../shared/utils/http-error-message';
+import { ErrorMessage } from '../error-message/error-message';
+import { Loader } from '../loader/loader';
+import { ContractLabelPipe } from '../../pipes/contract-label-pipe';
+import { SalaryRangePipe } from '../../pipes/salary-range-pipe';
+import { httpErrorMessage } from '../../utils/http-error-message';
 
 @Component({
   imports: [MatButtonModule, RouterLink, ErrorMessage, Loader, ContractLabelPipe, SalaryRangePipe],

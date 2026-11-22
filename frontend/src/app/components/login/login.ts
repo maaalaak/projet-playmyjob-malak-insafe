@@ -6,56 +6,45 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { RegisterForm } from '../../interfaces/register-form';
+import { LoginForm } from '../../interfaces/login-form';
 import { AuthService } from '../../services/auth-service';
-import { AuthLayout } from '../../shared/components/auth-layout/auth-layout';
-import { httpErrorMessage } from '../../shared/utils/http-error-message';
-import { passwordsMatch } from '../../shared/validators/passwords-match';
-
-const PASSWORD_MIN_LENGTH: number = 8;
+import { AuthLayout } from '../auth-layout/auth-layout';
+import { httpErrorMessage } from '../../utils/http-error-message';
 
 @Component({
   imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, RouterLink, AuthLayout],
-  selector: 'app-register',
-  templateUrl: './register.html',
+  selector: 'app-login',
+  templateUrl: './login.html',
 })
-export class Register {
+export class Login {
   private readonly authService: AuthService = inject(AuthService);
   private readonly router: Router = inject(Router);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  protected readonly passwordMinLength: number = PASSWORD_MIN_LENGTH;
   protected readonly submitting: WritableSignal<boolean> = signal<boolean>(false);
   protected readonly error: WritableSignal<string | null> = signal<string | null>(null);
 
-  protected readonly form: FormGroup<RegisterForm> = new FormGroup<RegisterForm>(
-    {
-      firstName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-      lastName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-      email: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email],
-      }),
-      password: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH)],
-      }),
-      passwordConfirmation: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    },
-    { validators: passwordsMatch },
-  );
+  protected readonly form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
 
   protected submit(): void {
     if (this.form.invalid) {
       return;
     }
 
-    const { passwordConfirmation: _passwordConfirmation, ...request } = this.form.getRawValue();
     this.submitting.set(true);
     this.error.set(null);
 
     this.authService
-      .register(request)
+      .login(this.form.getRawValue())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => void this.router.navigate(['/offers']),

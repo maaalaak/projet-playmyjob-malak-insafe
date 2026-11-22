@@ -1,5 +1,5 @@
 import { Component, input, InputSignal } from '@angular/core';
-import { GaugeEffects, Gauges } from '../../../interfaces/simulation';
+import { GaugeEffects, Gauges } from '../../interfaces/simulation';
 
 interface GaugeDefinition {
   key: keyof Gauges;

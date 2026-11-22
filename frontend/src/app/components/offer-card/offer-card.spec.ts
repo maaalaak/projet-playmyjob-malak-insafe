@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { Offer } from '../../../interfaces/offer';
+import { Offer } from '../../interfaces/offer';
 import { OfferCard } from './offer-card';
 
 const OFFER: Offer = {

@@ -1,5 +1,5 @@
 import { Component, input, InputSignal } from '@angular/core';
-import { ScenarioDocument } from '../../../interfaces/scenario';
+import { ScenarioDocument } from '../../interfaces/scenario';
 
 @Component({
   selector: 'app-work-document',

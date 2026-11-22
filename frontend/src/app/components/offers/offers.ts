@@ -12,11 +12,11 @@ import { OfferPage } from '../../interfaces/offer-page';
 import { ContractType, OfferSearch } from '../../interfaces/offer-search';
 import { OfferSearchForm } from '../../interfaces/offer-search-form';
 import { OfferService } from '../../services/offer-service';
-import { EmptyState } from '../../shared/components/empty-state/empty-state';
-import { ErrorMessage } from '../../shared/components/error-message/error-message';
-import { Loader } from '../../shared/components/loader/loader';
-import { OfferCard } from '../../shared/components/offer-card/offer-card';
-import { httpErrorMessage } from '../../shared/utils/http-error-message';
+import { EmptyState } from '../empty-state/empty-state';
+import { ErrorMessage } from '../error-message/error-message';
+import { Loader } from '../loader/loader';
+import { OfferCard } from '../offer-card/offer-card';
+import { httpErrorMessage } from '../../utils/http-error-message';
 
 const CONTRACT_TYPES: readonly ContractType[] = ['permanent', 'contract'];
 

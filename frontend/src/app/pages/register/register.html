@@ -25,7 +25,11 @@
     <mat-form-field appearance="outline">
       <mat-label>Mot de passe</mat-label>
       <input matInput type="password" autocomplete="new-password" formControlName="password" />
-      <mat-error>Le mot de passe est requis.</mat-error>
+      @if (form.controls.password.hasError('required')) {
+        <mat-error>Le mot de passe est requis.</mat-error>
+      } @else if (form.controls.password.hasError('minlength')) {
+        <mat-error>Le mot de passe doit contenir au moins {{ passwordMinLength }} caractères.</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -38,7 +42,13 @@
       <p class="form__error" role="alert">Les mots de passe ne sont pas identiques.</p>
     }
 
-    <button matButton="filled" type="submit" [disabled]="form.invalid">Créer mon compte</button>
+    @if (error()) {
+      <p class="form__error" role="alert">{{ error() }}</p>
+    }
+
+    <button matButton="filled" type="submit" [disabled]="form.invalid || submitting()">
+      {{ submitting() ? 'Création…' : 'Créer mon compte' }}
+    </button>
   </form>
 
   <ng-container authFooter>Déjà un compte ? <a routerLink="/login">Connecte-toi</a></ng-container>

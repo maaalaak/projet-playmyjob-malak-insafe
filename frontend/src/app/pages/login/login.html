@@ -16,7 +16,13 @@
       <mat-error>Le mot de passe est requis.</mat-error>
     </mat-form-field>
 
-    <button matButton="filled" type="submit" [disabled]="form.invalid">Se connecter</button>
+    @if (error()) {
+      <p class="form__error" role="alert">{{ error() }}</p>
+    }
+
+    <button matButton="filled" type="submit" [disabled]="form.invalid || submitting()">
+      {{ submitting() ? 'Connexion…' : 'Se connecter' }}
+    </button>
   </form>
 
   <ng-container authFooter>Pas encore de compte ? <a routerLink="/register">Inscris-toi</a></ng-container>

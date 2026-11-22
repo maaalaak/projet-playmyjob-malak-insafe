@@ -19,6 +19,13 @@
     }
   }
 
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
+  }
+
   &__nav {
     display: flex;
     flex-wrap: wrap;

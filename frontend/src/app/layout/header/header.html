@@ -1,16 +1,24 @@
 <header class="header">
   <a class="header__logo" routerLink="/">Play<span>My</span>Job</a>
 
-  <nav class="header__nav" aria-label="Navigation principale">
-    @for (link of links; track link.path) {
-      <a
-        class="header__link"
-        [routerLink]="link.path"
-        routerLinkActive="header__link--active"
-        [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-      >
-        {{ link.label }}
-      </a>
+  <div class="header__actions">
+    <nav class="header__nav" aria-label="Navigation principale">
+      @for (link of links; track link.path) {
+        <a
+          class="header__link"
+          [routerLink]="link.path"
+          routerLinkActive="header__link--active"
+          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+
+    @if (authService.isLoggedIn()) {
+      <button matButton="outlined" type="button" (click)="logout()">Déconnexion</button>
+    } @else {
+      <a matButton="filled" routerLink="/login">Connexion</a>
     }
-  </nav>
+  </div>
 </header>

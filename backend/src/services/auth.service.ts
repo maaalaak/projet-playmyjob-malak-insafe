@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { env } from '../config/env.ts';
 import { db } from '../data/db.ts';
 import { HttpError } from '../errors/http-error.ts';
-import type { AuthResponse, LoginRequest, PublicUser, RegisterRequest, User } from '../models/user.ts';
+import { toPublicUser, type AuthResponse, type LoginRequest, type RegisterRequest, type User } from '../models/user.ts';
 
 const HASH_ROUNDS: number = 10;
 const TOKEN_DURATION: jwt.SignOptions['expiresIn'] = '7d';
@@ -59,9 +59,7 @@ class AuthService {
 
   private authenticate(user: User): AuthResponse {
     const token: string = jwt.sign({}, env.JWT_SECRET, { subject: user.id, expiresIn: TOKEN_DURATION });
-    const { passwordHash: _passwordHash, ...publicUser }: User = user;
-
-    return { token, user: publicUser satisfies PublicUser };
+    return { token, user: toPublicUser(user) };
   }
 }
 

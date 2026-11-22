@@ -1,0 +1,33 @@
+<form class="form" [formGroup]="form" (ngSubmit)="save()">
+  <mat-form-field appearance="outline">
+    <mat-label>Prénom</mat-label>
+    <input matInput autocomplete="given-name" formControlName="firstName" />
+    <mat-error>Le prénom est requis (50 caractères au plus).</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nom</mat-label>
+    <input matInput autocomplete="family-name" formControlName="lastName" />
+    <mat-error>Le nom est requis (50 caractères au plus).</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" autocomplete="email" formControlName="email" />
+    @if (form.controls.email.hasError('required')) {
+      <mat-error>L'email est requis.</mat-error>
+    } @else if (form.controls.email.hasError('email')) {
+      <mat-error>L'email n'est pas valide.</mat-error>
+    }
+  </mat-form-field>
+
+  @if (error()) {
+    <p class="form__error" role="alert">{{ error() }}</p>
+  } @else if (saved() && form.pristine) {
+    <p class="form__success" role="status">✅ Profil enregistré.</p>
+  }
+
+  <button matButton="filled" type="submit" [disabled]="form.invalid || form.pristine || saving()">
+    {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}
+  </button>
+</form>

@@ -1,0 +1,42 @@
+<main class="profile">
+  <h1>Bonjour {{ user()?.firstName }} 👋</h1>
+  <p class="profile__intro">Ton profil, tes compétences et toutes tes journées vécues.</p>
+
+  <div class="profile__grid">
+    <section class="profile__card">
+      <h2>Mes informations</h2>
+      <app-profile-editor />
+    </section>
+
+    <section class="profile__card">
+      <h2>Mes compétences</h2>
+      <app-skills-radar [simulations]="simulations()" />
+      <dl class="profile__stats">
+        <div>
+          <dt>Parties terminées</dt>
+          <dd>{{ finishedCount() }}</dd>
+        </div>
+        <div>
+          <dt>Score moyen</dt>
+          <dd>{{ averageScore() ?? '–' }}</dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <section class="profile__history">
+    <h2>Mon historique</h2>
+
+    @if (loading()) {
+      <app-loader label="Chargement de ton historique…" />
+    } @else if (error(); as error) {
+      <app-error-message [message]="error" (retry)="load()" />
+    } @else if (simulations().length > 0) {
+      <app-history-list [simulations]="simulations()" (deleteRequested)="confirmDelete($event)" />
+    } @else {
+      <app-empty-state message="Tu n'as encore vécu aucune journée.">
+        <a matButton="filled" routerLink="/offers">Choisir une offre</a>
+      </app-empty-state>
+    }
+  </section>
+</main>

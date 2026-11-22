@@ -61,6 +61,11 @@ a {
     margin: 0 0 8px;
     color: var(--mat-sys-error);
   }
+
+  &__success {
+    margin: 0 0 8px;
+    color: #1b7a43;
+  }
 }
 
 // Grille de cartes, utilisée par les pages Offres et Favoris.

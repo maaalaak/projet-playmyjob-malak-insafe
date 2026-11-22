@@ -1,0 +1,24 @@
+@if (averages(); as averages) {
+  <figure class="skills-radar">
+    <svg viewBox="0 0 240 240" role="img" aria-labelledby="radar-description">
+      @for (level of gridLevels; track level) {
+        <polygon class="skills-radar__grid" [attr.points]="gridShape(level)" />
+      }
+      @for (axis of axes; track axis.key) {
+        @let end = axisEnd(axis);
+        @let label = labelPosition(axis);
+        <line class="skills-radar__axis" [attr.x1]="center" [attr.y1]="center" [attr.x2]="end.x" [attr.y2]="end.y" />
+        <text class="skills-radar__label" [attr.x]="label.x" [attr.y]="label.y" text-anchor="middle" dominant-baseline="middle">
+          {{ axis.label }}
+        </text>
+      }
+      <polygon class="skills-radar__shape" [attr.points]="shape()" />
+    </svg>
+    <figcaption id="radar-description" class="visually-hidden">
+      Moyenne de tes parties : travail d'équipe {{ averages.team }}, relation {{ averages.client }},
+      gestion du temps {{ averages.time }}, qualité {{ averages.quality }}, sur 100.
+    </figcaption>
+  </figure>
+} @else {
+  <p class="skills-radar__empty">Termine une simulation pour découvrir ton radar.</p>
+}

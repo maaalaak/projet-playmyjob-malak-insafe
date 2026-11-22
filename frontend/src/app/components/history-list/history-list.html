@@ -1,0 +1,28 @@
+<ul class="history-list">
+  @for (simulation of simulations(); track simulation.id) {
+    <li class="history-list__item">
+      @if (simulation.result; as result) {
+        <app-score-ring [score]="result.score" size="small" />
+      } @else {
+        <span class="history-list__pending" aria-hidden="true">…</span>
+      }
+
+      <div class="history-list__info">
+        <strong>{{ simulation.offer.title }}</strong>
+        <span>{{ simulation.offer.company }} · {{ simulation.createdAt | date: 'd MMM y, HH:mm' }}</span>
+        @if (simulation.result; as result) {
+          <span class="history-list__title">« {{ result.title }} »</span>
+        } @else {
+          <span class="history-list__title">Partie non terminée</span>
+        }
+      </div>
+
+      <div class="history-list__actions">
+        @if (simulation.status === 'finished') {
+          <a matButton [routerLink]="['/result', simulation.id]">Voir le résultat</a>
+        }
+        <button matButton type="button" (click)="deleteRequested.emit(simulation)">Supprimer</button>
+      </div>
+    </li>
+  }
+</ul>

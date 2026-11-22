@@ -40,6 +40,14 @@ export class AuthService {
     this.session.set(null);
   }
 
+  /** Remplace l'utilisateur de la session, par exemple après une modification du profil. */
+  public updateUser(user: User): void {
+    const session: AuthResponse | null = this.session();
+    if (session) {
+      this.saveSession({ ...session, user });
+    }
+  }
+
   private saveSession(response: AuthResponse): void {
     localStorage.setItem(SESSION_KEY, JSON.stringify(response));
     this.session.set(response);

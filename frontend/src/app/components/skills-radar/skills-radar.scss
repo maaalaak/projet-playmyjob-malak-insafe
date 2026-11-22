@@ -1,0 +1,45 @@
+.skills-radar {
+  margin: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  &__grid {
+    fill: none;
+    stroke: var(--color-border);
+  }
+
+  &__axis {
+    stroke: var(--color-border);
+  }
+
+  &__label {
+    font-size: 10px;
+    fill: var(--color-text-muted);
+  }
+
+  &__shape {
+    fill: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    animation: radar-in 0.8s ease-out;
+    transform-origin: center;
+  }
+
+  &__empty {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+}
+
+@keyframes radar-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}

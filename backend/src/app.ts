@@ -3,7 +3,7 @@ import { errorHandler, notFoundHandler } from './middlewares/error.middleware.ts
 import { authRouter } from './routes/auth.routes.ts';
 import { favoriteRouter } from './routes/favorite.routes.ts';
 import { offerRouter } from './routes/offer.routes.ts';
-import { simulationTestRouter } from './routes/simulation-test.routes.ts';
+import { simulationRouter } from './routes/simulation.routes.ts';
 
 export const app: Express = express();
 
@@ -15,8 +15,8 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/offers', offerRouter);
+app.use('/api/simulations', simulationRouter);
 app.use('/api/test/favorites', favoriteRouter);
-app.use('/api/test/simulation', simulationTestRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -1,0 +1,45 @@
+<app-auth-layout heading="Inscription">
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Prénom</mat-label>
+      <input matInput autocomplete="given-name" formControlName="firstName" />
+      <mat-error>Le prénom est requis.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nom</mat-label>
+      <input matInput autocomplete="family-name" formControlName="lastName" />
+      <mat-error>Le nom est requis.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" autocomplete="email" formControlName="email" />
+      @if (form.controls.email.hasError('required')) {
+        <mat-error>L'email est requis.</mat-error>
+      } @else if (form.controls.email.hasError('email')) {
+        <mat-error>L'email n'est pas valide.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" autocomplete="new-password" formControlName="password" />
+      <mat-error>Le mot de passe est requis.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Confirmation du mot de passe</mat-label>
+      <input matInput type="password" autocomplete="new-password" formControlName="passwordConfirmation" />
+      <mat-error>La confirmation est requise.</mat-error>
+    </mat-form-field>
+
+    @if (form.hasError('passwordsMismatch') && form.controls.passwordConfirmation.touched) {
+      <p class="form__error" role="alert">Les mots de passe ne sont pas identiques.</p>
+    }
+
+    <button matButton="filled" type="submit" [disabled]="form.invalid">Créer mon compte</button>
+  </form>
+
+  <ng-container authFooter>Déjà un compte ? <a routerLink="/login">Connecte-toi</a></ng-container>
+</app-auth-layout>

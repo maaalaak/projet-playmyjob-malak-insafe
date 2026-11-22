@@ -46,3 +46,18 @@ h3 {
   font-family: var(--font-display);
   line-height: 1.2;
 }
+
+a {
+  color: var(--color-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__error {
+    margin: 0 0 8px;
+    color: var(--mat-sys-error);
+  }
+}

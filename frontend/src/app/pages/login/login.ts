@@ -5,11 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { LoginForm } from '../../interfaces/login-form';
+import { AuthLayout } from '../../shared/components/auth-layout/auth-layout';
 
 @Component({
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, RouterLink],
+  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, RouterLink, AuthLayout],
   selector: 'app-login',
-  styleUrl: './login.scss',
   templateUrl: './login.html',
 })
 export class Login {

@@ -13,6 +13,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/login/login').then((m) => m.Login),
   },
   {
+    path: 'register',
+    title: 'Inscription · PlayMyJob',
+    loadComponent: () => import('./pages/register/register').then((m) => m.Register),
+  },
+  {
     path: '**',
     title: 'Page introuvable · PlayMyJob',
     loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound),

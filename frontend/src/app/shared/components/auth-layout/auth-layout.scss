@@ -1,4 +1,4 @@
-.login {
+.auth-layout {
   box-sizing: border-box;
   width: 100%;
   max-width: 440px;
@@ -9,18 +9,8 @@
     margin: 0 0 32px;
   }
 
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  p {
+  &__footer {
     margin: 24px 0 0;
     color: var(--color-text-muted);
-  }
-
-  a {
-    color: var(--color-primary);
   }
 }

@@ -8,6 +8,7 @@ const envSchema = z.object({
   GROQ_MODEL: z.string().min(1),
   ADZUNA_APP_ID: z.string().min(1),
   ADZUNA_APP_KEY: z.string().min(1),
+  JWT_SECRET: z.string().min(32),
 });
 
 export type Env = z.infer<typeof envSchema>;

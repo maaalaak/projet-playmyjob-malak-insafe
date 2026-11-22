@@ -53,7 +53,9 @@ class AiService {
     const parsed: z.ZodSafeParseResult<T> = schema.safeParse(raw);
 
     if (!parsed.success) {
-      throw new HttpError(502, `La réponse de ${provider} n'a pas le format attendu`);
+      const issue: z.core.$ZodIssue | undefined = parsed.error.issues[0];
+      const detail: string = issue ? ` (${issue.path.join('.') || 'racine'} : ${issue.message})` : '';
+      throw new HttpError(502, `La réponse de ${provider} n'a pas le format attendu${detail}`);
     }
 
     return parsed.data;

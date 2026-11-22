@@ -7,28 +7,28 @@ export const MOODS = ['content', 'neutre', 'inquiet', 'agace'] as const;
 
 export const characterSchema = z.object({
   id: z.string().min(1).max(20),
-  name: z.string().min(1).max(30),
-  role: z.string().min(1).max(60),
+  name: z.string().min(1).max(40),
+  role: z.string().min(1).max(80),
   avatar: z.string().min(1).max(16),
 });
 
 export const workDocumentSchema = z.object({
-  title: z.string().min(1).max(80),
-  content: z.string().min(1).max(600),
+  title: z.string().min(1).max(100),
+  content: z.string().min(1).max(1000),
 });
 
 export const dayEventSchema = z.object({
   time: z.string().min(1).max(5),
   characterId: z.string().min(1),
-  message: z.string().min(1).max(400),
+  message: z.string().min(1).max(500),
   urgent: z.boolean(),
   document: workDocumentSchema.nullable(),
 });
 
 export const scenarioSchema = z
   .object({
-    setting: z.string().min(1).max(100),
-    intro: z.string().min(1).max(400),
+    setting: z.string().min(1).max(200),
+    intro: z.string().min(1).max(600),
     characters: z.array(characterSchema).length(CHARACTERS_PER_DAY),
     events: z.array(dayEventSchema).length(EVENTS_PER_DAY),
   })
@@ -48,17 +48,17 @@ export const gaugeEffectsSchema = z.object({
 });
 
 export const characterReplySchema = z.object({
-  reply: z.string().min(1).max(400),
+  reply: z.string().min(1).max(500),
   mood: z.enum(MOODS),
   effects: gaugeEffectsSchema,
-  skill: z.string().min(1).max(40),
+  skill: z.string().min(1).max(60),
 });
 
 export const simulationResultSchema = z.object({
-  title: z.string().min(1).max(60),
+  title: z.string().min(1).max(80),
   score: z.number().int().min(0).max(100),
-  strengths: z.array(z.string().min(1)).min(1).max(3),
-  advice: z.string().min(1).max(400),
+  strengths: z.array(z.string().min(1).max(120)).min(1).max(3),
+  advice: z.string().min(1).max(500),
 });
 
 export type Character = z.infer<typeof characterSchema>;

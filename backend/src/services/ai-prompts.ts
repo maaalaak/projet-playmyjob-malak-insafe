@@ -24,15 +24,15 @@ export function buildScenarioPrompt(offer: Offer): string {
     describeOffer(offer),
     "L'extrait peut être incomplet : complète avec ce que fait vraiment ce métier au quotidien.",
     '',
-    `1. Décris le lieu de travail précis (setting) et la situation de départ en 2 phrases (intro), en tutoyant le joueur.`,
+    '1. Décris le lieu de travail précis en moins de 15 mots (setting), puis la situation de départ en 2 phrases (intro), en tutoyant le joueur.',
     `2. Crée ${CHARACTERS_PER_DAY} personnages typiques de ce métier (collègue, responsable, client, patient, usager…) :`,
     'un id court en minuscules sans accent, un prénom, leur rôle et un emoji pour avatar.',
     `3. Écris ${EVENTS_PER_DAY} situations entre 08:30 et 17:30, dans l'ordre chronologique.`,
     'Chaque situation est un vrai problème concret de ce métier, dit par un personnage au joueur, en 1 à 3 phrases, comme dans la réalité.',
     'Le joueur doit agir ou décider : jamais de question à choix multiples.',
     'Marque exactement 2 situations comme urgentes.',
-    "Pour 2 ou 3 situations, ajoute un document de travail réaliste (dossier, ticket, commande, fiche client…) avec les informations utiles pour agir. Sinon, document vaut null.",
-    'Écris en français.',
+    "Pour 2 ou 3 situations, ajoute un document de travail réaliste et court (dossier, ticket, commande, fiche client…), de 5 lignes au plus, avec les informations utiles pour agir. Sinon, document vaut null.",
+    'Écris en français. Les collègues tutoient le joueur ; les clients, patients et usagers le vouvoient.',
     SAFETY_RULES,
   ].join('\n');
 }

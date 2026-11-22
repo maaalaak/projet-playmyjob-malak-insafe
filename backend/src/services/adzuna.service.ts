@@ -1,10 +1,11 @@
 import { env } from '../config/env.ts';
 import { HttpError } from '../errors/http-error.ts';
-import type { Offer } from '../models/offer.ts';
+import { OFFERS_PER_PAGE, type Offer, type OfferSearch } from '../models/offer.ts';
 
 interface AdzunaJob {
   id: string;
   title: string;
+  description?: string;
   company?: { display_name?: string };
   location?: { display_name?: string };
   contract_type?: string;
@@ -15,25 +16,33 @@ interface AdzunaJob {
 }
 
 interface AdzunaSearchResponse {
+  count: number;
   results: AdzunaJob[];
 }
 
-class AdzunaService {
-  private readonly baseUrl: string = 'https://api.adzuna.com/v1/api/jobs/fr/search/1';
-  private readonly timeoutMs: number = 10_000;
-  private readonly maxResultsPerPage: number = 50;
+export interface AdzunaSearchResult {
+  offers: Offer[];
+  totalCount: number;
+}
 
-  public async searchOffers(what: string, where: string, limit: number): Promise<Offer[]> {
-    // On demande plus d'offres que nécessaire, car les fausses offres sont retirées ensuite.
+class AdzunaService {
+  private readonly baseUrl: string = 'https://api.adzuna.com/v1/api/jobs/fr/search';
+  private readonly timeoutMs: number = 10_000;
+
+  public async search(search: OfferSearch): Promise<AdzunaSearchResult> {
     const params: URLSearchParams = new URLSearchParams({
       app_id: env.ADZUNA_APP_ID,
       app_key: env.ADZUNA_APP_KEY,
-      what,
-      where,
-      results_per_page: String(Math.min(limit * 2, this.maxResultsPerPage)),
+      what: search.job,
+      where: search.city,
+      results_per_page: String(OFFERS_PER_PAGE),
     });
 
-    const response: Response = await fetch(`${this.baseUrl}?${params.toString()}`, {
+    if (search.contract) {
+      params.set(search.contract, '1');
+    }
+
+    const response: Response = await fetch(`${this.baseUrl}/${search.page}?${params.toString()}`, {
       headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(this.timeoutMs),
     });
@@ -44,10 +53,10 @@ class AdzunaService {
 
     const body: AdzunaSearchResponse = (await response.json()) as AdzunaSearchResponse;
 
-    return body.results
-      .filter((job: AdzunaJob) => !this.isTestOffer(job))
-      .slice(0, limit)
-      .map((job: AdzunaJob) => this.toOffer(job));
+    return {
+      offers: body.results.filter((job: AdzunaJob) => !this.isTestOffer(job)).map((job: AdzunaJob) => this.toOffer(job)),
+      totalCount: body.count,
+    };
   }
 
   private isTestOffer(job: AdzunaJob): boolean {
@@ -60,6 +69,7 @@ class AdzunaService {
       title: job.title,
       company: job.company?.display_name ?? 'Entreprise non précisée',
       city: job.location?.display_name ?? 'Lieu non précisé',
+      description: job.description ?? '',
       contractType: job.contract_type ?? null,
       salaryMin: job.salary_min ?? null,
       salaryMax: job.salary_max ?? null,

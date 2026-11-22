@@ -1,0 +1,66 @@
+.score-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  &--large {
+    width: 180px;
+    height: 180px;
+  }
+
+  &--small {
+    width: 64px;
+    height: 64px;
+
+    .score-ring__number {
+      font-size: 1rem;
+
+      small {
+        display: none;
+      }
+    }
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+
+  circle {
+    fill: none;
+    stroke-width: 10;
+  }
+
+  &__track {
+    stroke: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  &__value {
+    stroke-linecap: round;
+  }
+
+  &--high &__value {
+    stroke: #3fb871;
+  }
+
+  &--medium &__value {
+    stroke: #f5a524;
+  }
+
+  &--low &__value {
+    stroke: var(--color-accent);
+  }
+
+  &__number {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+
+    small {
+      font-size: 1rem;
+      opacity: 0.6;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<ol class="day-recap">
+  @for (item of items(); track $index) {
+    <li class="day-recap__item">
+      <p class="day-recap__meta">
+        <span aria-hidden="true">{{ item.character?.avatar }}</span>
+        {{ item.event.time }} · {{ item.character?.name }}
+        @if (item.event.urgent) {
+          <span class="day-recap__urgent">Urgent</span>
+        }
+      </p>
+      <p class="day-recap__situation">« {{ item.event.message }} »</p>
+      <p class="day-recap__reply">
+        <strong>Toi :</strong>
+        {{ item.exchange.timedOut ? 'pas de réaction à temps' : item.exchange.reply }}
+      </p>
+      <p class="day-recap__skill">💡 {{ item.exchange.skill }}</p>
+    </li>
+  }
+</ol>

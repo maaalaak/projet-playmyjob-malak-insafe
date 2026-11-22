@@ -1,0 +1,14 @@
+<div class="score-ring score-ring--{{ size() }} score-ring--{{ level() }}" role="img" [attr.aria-label]="'Score : ' + score() + ' sur 100'">
+  <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle class="score-ring__track" cx="60" cy="60" [attr.r]="radius" />
+    <circle
+      class="score-ring__value"
+      cx="60"
+      cy="60"
+      [attr.r]="radius"
+      [attr.stroke-dasharray]="circumference"
+      [attr.stroke-dashoffset]="dashOffset()"
+    />
+  </svg>
+  <p class="score-ring__number" aria-hidden="true">{{ displayed() }}<small>/100</small></p>
+</div>

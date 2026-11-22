@@ -1,0 +1,52 @@
+<main class="result">
+  @if (loading()) {
+    <app-loader label="Chargement de ton bilan…" />
+  } @else if (error(); as error) {
+    <app-error-message [message]="error" (retry)="load()" />
+  } @else if (simulation(); as simulation) {
+    @if (simulation.result; as result) {
+      <section class="result__hero">
+        <app-score-ring [score]="result.score" />
+        <div>
+          <p class="result__job">{{ simulation.offer.title }} · {{ simulation.offer.company }}</p>
+          <h1>{{ result.title }}</h1>
+          <p class="result__subtitle">Ta compatibilité avec ce poste, d'après ta journée.</p>
+        </div>
+      </section>
+
+      <div class="result__grid">
+        <section class="result__card">
+          <h2>Tes points forts</h2>
+          <ul class="result__strengths">
+            @for (strength of result.strengths; track strength) {
+              <li>{{ strength }}</li>
+            }
+          </ul>
+
+          <h2>Notre conseil</h2>
+          <p>{{ result.advice }}</p>
+        </section>
+
+        <section class="result__card">
+          <h2>Ta fin de journée</h2>
+          <app-gauge-panel [gauges]="simulation.gauges" />
+        </section>
+      </div>
+
+      <div class="result__actions">
+        <a matButton="filled" [routerLink]="['/simulation', simulation.offer.id]">Rejouer ce poste</a>
+        <a matButton="outlined" [routerLink]="['/offers', simulation.offer.id]">Revoir l'offre</a>
+        <a matButton routerLink="/offers">Voir d'autres offres</a>
+      </div>
+
+      <section>
+        <h2>Ta journée en résumé</h2>
+        <app-day-recap [simulation]="simulation" />
+      </section>
+    } @else {
+      <app-empty-state message="Cette journée n'est pas encore terminée.">
+        <a matButton="filled" routerLink="/offers">Voir les offres</a>
+      </app-empty-state>
+    }
+  }
+</main>

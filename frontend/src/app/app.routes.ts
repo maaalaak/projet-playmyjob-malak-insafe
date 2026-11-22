@@ -35,6 +35,12 @@ export const routes: Routes = [
     loadComponent: () => import('./components/simulation/simulation').then((m) => m.SimulationPage),
   },
   {
+    path: 'result/:id',
+    title: 'Ton résultat · PlayMyJob',
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/result/result').then((m) => m.Result),
+  },
+  {
     path: '**',
     title: 'Page introuvable · PlayMyJob',
     loadComponent: () => import('./components/not-found/not-found').then((m) => m.NotFound),

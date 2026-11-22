@@ -1,0 +1,28 @@
+<main class="offer-detail">
+  <a class="offer-detail__back" routerLink="/offers">← Retour aux offres</a>
+
+  @if (loading()) {
+    <app-loader label="Chargement de l'offre…" />
+  } @else if (error(); as error) {
+    <app-error-message [message]="error" (retry)="retry()" />
+  } @else if (offer(); as offer) {
+    <article>
+      <h1>{{ offer.title }}</h1>
+      <p class="offer-detail__company">{{ offer.company }} · {{ offer.city }}</p>
+
+      <ul class="offer-detail__tags">
+        <li>{{ offer.contractType | contractLabel }}</li>
+        <li>{{ offer.salaryMin | salaryRange: offer.salaryMax }}</li>
+      </ul>
+
+      <div class="offer-detail__actions">
+        <a matButton="filled" [routerLink]="['/simulation', offer.id]">Vivre ce poste</a>
+        <a matButton="outlined" [href]="offer.url" target="_blank" rel="noopener">Voir l'offre réelle</a>
+      </div>
+
+      <h2>Description</h2>
+      <p class="offer-detail__description">{{ offer.description || 'Aucune description fournie.' }}</p>
+      <p class="offer-detail__source">Extrait de l'annonce fourni par Adzuna.</p>
+    </article>
+  }
+</main>

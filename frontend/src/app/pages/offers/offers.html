@@ -1,0 +1,63 @@
+<main class="offers">
+  <h1>Offres d'emploi</h1>
+  <p class="offers__intro">Trouve une vraie offre, dans n'importe quel métier, puis vis le poste avant de postuler.</p>
+
+  <form class="offers__search" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Poste</mat-label>
+      <input matInput formControlName="job" placeholder="Infirmier, développeur, cuisinier…" />
+      <mat-error>Indique un poste.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Ville</mat-label>
+      <input matInput formControlName="city" placeholder="Lyon, Paris…" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Contrat</mat-label>
+      <mat-select formControlName="contract">
+        @for (option of contractOptions; track option.label) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button matButton="filled" type="submit" [disabled]="form.invalid">Rechercher</button>
+  </form>
+
+  @if (loading()) {
+    <app-loader label="Recherche des offres…" />
+  } @else if (error(); as error) {
+    <app-error-message [message]="error" (retry)="retry()" />
+  } @else if (result(); as result) {
+    @if (result.offers.length > 0) {
+      <p class="offers__count">{{ result.totalCount }} offres trouvées</p>
+
+      <ul class="offers__list">
+        @for (offer of result.offers; track offer.id) {
+          <li><app-offer-card [offer]="offer" /></li>
+        }
+      </ul>
+
+      <nav class="offers__pagination" aria-label="Pages de résultats">
+        <button matButton type="button" [disabled]="result.page <= 1" (click)="goToPage(result.page - 1)">
+          Précédent
+        </button>
+        <span>Page {{ result.page }} sur {{ result.totalPages }}</span>
+        <button
+          matButton
+          type="button"
+          [disabled]="result.page >= result.totalPages"
+          (click)="goToPage(result.page + 1)"
+        >
+          Suivant
+        </button>
+      </nav>
+    } @else {
+      <app-empty-state message="Aucune offre ne correspond à ta recherche. Essaie un autre poste ou une autre ville." />
+    }
+  } @else {
+    <app-empty-state message="Cherche un poste pour découvrir les offres réelles." />
+  }
+</main>

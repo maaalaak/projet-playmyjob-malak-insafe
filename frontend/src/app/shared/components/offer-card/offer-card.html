@@ -1,0 +1,11 @@
+<article class="offer-card">
+  <h3>
+    <a class="offer-card__title" [routerLink]="['/offers', offer().id]">{{ offer().title }}</a>
+  </h3>
+  <p class="offer-card__company">{{ offer().company }} · {{ offer().city }}</p>
+
+  <ul class="offer-card__tags">
+    <li>{{ offer().contractType | contractLabel }}</li>
+    <li>{{ offer().salaryMin | salaryRange: offer().salaryMax }}</li>
+  </ul>
+</article>

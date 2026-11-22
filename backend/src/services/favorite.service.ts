@@ -1,54 +1,47 @@
 import { randomUUID } from 'node:crypto';
 import { db } from '../data/db.ts';
 import { HttpError } from '../errors/http-error.ts';
-import type { CreateFavoriteRequest, Favorite, UpdateFavoriteRequest } from '../models/favorite.ts';
+import type { Favorite, PublicFavorite } from '../models/favorite.ts';
+import type { Offer } from '../models/offer.ts';
 
 class FavoriteService {
-  public findAll(): Favorite[] {
-    return [...db.data.favorites].sort((a: Favorite, b: Favorite) => b.createdAt.localeCompare(a.createdAt));
+  public findAll(userId: string): PublicFavorite[] {
+    return db.data.favorites
+      .filter((favorite: Favorite) => favorite.userId === userId)
+      .sort((a: Favorite, b: Favorite) => b.createdAt.localeCompare(a.createdAt))
+      .map((favorite: Favorite) => this.toPublic(favorite));
   }
 
-  public findById(id: string): Favorite {
-    const favorite: Favorite | undefined = db.data.favorites.find((item: Favorite) => item.id === id);
-
-    if (!favorite) {
-      throw new HttpError(404, 'Favori introuvable');
-    }
-
-    return favorite;
-  }
-
-  public async create(request: CreateFavoriteRequest): Promise<Favorite> {
-    const alreadySaved: boolean = db.data.favorites.some((item: Favorite) => item.offer.id === request.offer.id);
+  public async create(userId: string, offer: Offer): Promise<PublicFavorite> {
+    const alreadySaved: boolean = db.data.favorites.some(
+      (favorite: Favorite) => favorite.userId === userId && favorite.offer.id === offer.id,
+    );
 
     if (alreadySaved) {
-      throw new HttpError(409, 'Cette offre est déjà dans les favoris');
+      throw new HttpError(409, 'Cette offre est déjà dans tes favoris');
     }
 
-    const now: string = new Date().toISOString();
-    const favorite: Favorite = { id: randomUUID(), offer: request.offer, note: request.note, createdAt: now, updatedAt: now };
-
+    const favorite: Favorite = { id: randomUUID(), userId, offer, createdAt: new Date().toISOString() };
     db.data.favorites.push(favorite);
     await db.write();
 
-    return favorite;
+    return this.toPublic(favorite);
   }
 
-  public async update(id: string, request: UpdateFavoriteRequest): Promise<Favorite> {
-    const favorite: Favorite = this.findById(id);
+  public async remove(userId: string, id: string): Promise<void> {
+    const owned: boolean = db.data.favorites.some((favorite: Favorite) => favorite.id === id && favorite.userId === userId);
 
-    favorite.note = request.note;
-    favorite.updatedAt = new Date().toISOString();
+    if (!owned) {
+      throw new HttpError(404, 'Favori introuvable');
+    }
+
+    db.data.favorites = db.data.favorites.filter((favorite: Favorite) => favorite.id !== id);
     await db.write();
-
-    return favorite;
   }
 
-  public async remove(id: string): Promise<void> {
-    this.findById(id);
-
-    db.data.favorites = db.data.favorites.filter((item: Favorite) => item.id !== id);
-    await db.write();
+  private toPublic(favorite: Favorite): PublicFavorite {
+    const { userId: _userId, ...publicFavorite }: Favorite = favorite;
+    return publicFavorite;
   }
 }
 

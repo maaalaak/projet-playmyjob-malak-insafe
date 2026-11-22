@@ -5,15 +5,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { catchError, map, merge, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { Offer } from '../../interfaces/offer';
-import { OfferService } from '../../services/offer-service';
-import { ErrorMessage } from '../error-message/error-message';
-import { Loader } from '../loader/loader';
 import { ContractLabelPipe } from '../../pipes/contract-label-pipe';
 import { SalaryRangePipe } from '../../pipes/salary-range-pipe';
+import { OfferService } from '../../services/offer-service';
 import { httpErrorMessage } from '../../utils/http-error-message';
+import { ErrorMessage } from '../error-message/error-message';
+import { FavoriteButton } from '../favorite-button/favorite-button';
+import { Loader } from '../loader/loader';
 
 @Component({
-  imports: [MatButtonModule, RouterLink, ErrorMessage, Loader, ContractLabelPipe, SalaryRangePipe],
+  imports: [MatButtonModule, RouterLink, ErrorMessage, FavoriteButton, Loader, ContractLabelPipe, SalaryRangePipe],
   selector: 'app-offer-detail',
   styleUrl: './offer-detail.scss',
   templateUrl: './offer-detail.html',

@@ -37,15 +37,6 @@
     color: var(--color-text-muted);
   }
 
-  &__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
   &__pagination {
     display: flex;
     align-items: center;

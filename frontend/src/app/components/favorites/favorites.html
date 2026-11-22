@@ -1,0 +1,20 @@
+<main class="favorites">
+  <h1>Mes favoris</h1>
+  <p class="favorites__intro">Les offres que tu as gardées pour plus tard.</p>
+
+  @if (loading()) {
+    <app-loader label="Chargement de tes favoris…" />
+  } @else if (error(); as error) {
+    <app-error-message [message]="error" (retry)="load()" />
+  } @else if (favorites().length > 0) {
+    <ul class="card-grid">
+      @for (favorite of favorites(); track favorite.id) {
+        <li><app-offer-card [offer]="favorite.offer" /></li>
+      }
+    </ul>
+  } @else {
+    <app-empty-state message="Tu n'as pas encore de favori. Touche le cœur d'une offre pour la garder ici.">
+      <a matButton="filled" routerLink="/offers">Découvrir les offres</a>
+    </app-empty-state>
+  }
+</main>

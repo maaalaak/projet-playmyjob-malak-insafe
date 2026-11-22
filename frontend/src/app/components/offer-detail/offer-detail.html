@@ -18,6 +18,7 @@
       <div class="offer-detail__actions">
         <a matButton="filled" [routerLink]="['/simulation', offer.id]">Vivre ce poste</a>
         <a matButton="outlined" [href]="offer.url" target="_blank" rel="noopener">Voir l'offre réelle</a>
+        <app-favorite-button [offer]="offer" />
       </div>
 
       <h2>Description</h2>

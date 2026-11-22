@@ -1,0 +1,12 @@
+<button
+  class="favorite-button"
+  type="button"
+  [class.favorite-button--active]="isFavorite()"
+  [disabled]="saving()"
+  [attr.aria-pressed]="isFavorite()"
+  [attr.aria-label]="isFavorite() ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+  [title]="isFavorite() ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+  (click)="toggle()"
+>
+  <span aria-hidden="true">{{ isFavorite() ? '♥' : '♡' }}</span>
+</button>

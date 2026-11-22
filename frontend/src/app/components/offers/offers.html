@@ -34,7 +34,7 @@
     @if (result.offers.length > 0) {
       <p class="offers__count">{{ result.totalCount }} offres trouvées</p>
 
-      <ul class="offers__list">
+      <ul class="card-grid">
         @for (offer of result.offers; track offer.id) {
           <li><app-offer-card [offer]="offer" /></li>
         }

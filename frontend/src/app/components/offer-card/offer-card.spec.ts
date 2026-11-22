@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Offer } from '../../interfaces/offer';
@@ -20,7 +21,7 @@ describe('OfferCard', () => {
   it('shows the offer with a link to its page', async () => {
     await TestBed.configureTestingModule({
       imports: [OfferCard],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideHttpClient()],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(OfferCard);

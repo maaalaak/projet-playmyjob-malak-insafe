@@ -29,6 +29,12 @@ export const routes: Routes = [
     loadComponent: () => import('./components/offer-detail/offer-detail').then((m) => m.OfferDetail),
   },
   {
+    path: 'favorites',
+    title: 'Mes favoris · PlayMyJob',
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/favorites/favorites').then((m) => m.Favorites),
+  },
+  {
     path: 'simulation/:offerId',
     title: 'Simulation · PlayMyJob',
     canActivate: [authGuard],

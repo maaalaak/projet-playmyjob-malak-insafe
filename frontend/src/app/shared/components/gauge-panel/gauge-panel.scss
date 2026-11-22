@@ -1,0 +1,70 @@
+.gauge-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+
+    strong {
+      margin-left: auto;
+    }
+  }
+
+  &__effect {
+    font-weight: 700;
+    color: #3fb871;
+    animation: gauge-effect 2.5s ease-out forwards;
+
+    &--negative {
+      color: var(--color-accent);
+    }
+  }
+
+  &__track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 15%, transparent);
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease, background-color 0.8s ease;
+
+    &--high {
+      background: #3fb871;
+    }
+
+    &--medium {
+      background: #f5a524;
+    }
+
+    &--low {
+      background: var(--color-accent);
+    }
+  }
+}
+
+@keyframes gauge-effect {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  15%,
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+  }
+}

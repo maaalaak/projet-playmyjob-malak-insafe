@@ -1,0 +1,21 @@
+<ul class="gauge-panel">
+  @for (gauge of definitions; track gauge.key) {
+    @let value = gauges()[gauge.key];
+    @let effect = lastEffects()?.[gauge.key] ?? 0;
+    <li class="gauge-panel__gauge">
+      <div class="gauge-panel__label">
+        <span aria-hidden="true">{{ gauge.icon }}</span>
+        <span>{{ gauge.label }}</span>
+        @if (effect !== 0) {
+          <span class="gauge-panel__effect" [class.gauge-panel__effect--negative]="effect < 0">
+            {{ effect > 0 ? '+' : '' }}{{ effect }}
+          </span>
+        }
+        <strong>{{ value }}</strong>
+      </div>
+      <div class="gauge-panel__track" role="progressbar" [attr.aria-label]="gauge.label" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="value">
+        <div class="gauge-panel__fill gauge-panel__fill--{{ level(value) }}" [style.width.%]="value"></div>
+      </div>
+    </li>
+  }
+</ul>

@@ -1,0 +1,88 @@
+<main class="simulation">
+  @switch (step()) {
+    @case ('starting') {
+      @if (error(); as error) {
+        <app-error-message [message]="error" (retry)="start()" />
+      } @else {
+        <app-loader label="Ton équipe arrive au bureau…" />
+      }
+    }
+
+    @case ('intro') {
+      @if (simulation(); as simulation) {
+        <section class="simulation__intro">
+          <p class="simulation__job">{{ simulation.offer.title }} · {{ simulation.offer.company }}</p>
+          <h1>{{ simulation.scenario.setting }}</h1>
+          <p>{{ simulation.scenario.intro }}</p>
+
+          <ul class="simulation__team">
+            @for (character of simulation.scenario.characters; track character.id) {
+              <li>
+                <span aria-hidden="true">{{ character.avatar }}</span>
+                <strong>{{ character.name }}</strong>
+                <small>{{ character.role }}</small>
+              </li>
+            }
+          </ul>
+
+          <button matButton="filled" type="button" (click)="begin()">Commencer ma journée</button>
+
+          @if (simulation.source === 'secours') {
+            <p class="simulation__note">L'IA ne répond pas pour le moment : tu joues une journée générique de secours.</p>
+          }
+        </section>
+      }
+    }
+
+    @default {
+      @if (simulation(); as simulation) {
+        <div class="simulation__workplace">
+          <aside class="simulation__side">
+            @if (speaker(); as speaker) {
+              <app-character-avatar [character]="speaker" [mood]="speakerMood()" [thinking]="sending()" />
+            }
+            @if (currentEvent()?.document; as document) {
+              <app-work-document [document]="document" />
+            }
+          </aside>
+
+          <section class="simulation__main">
+            <header class="simulation__bar">
+              <span>📍 {{ simulation.scenario.setting }}</span>
+              @if (currentEvent(); as event) {
+                <span>🕘 {{ event.time }}</span>
+              }
+              <span>Situation {{ currentIndex() + (isDayOver() ? 0 : 1) }} sur {{ simulation.scenario.events.length }}</span>
+            </header>
+
+            <app-conversation [messages]="messages()" [characters]="simulation.scenario.characters" />
+
+            @if (step() === 'finishing') {
+              @if (error(); as error) {
+                <app-error-message [message]="error" (retry)="finish()" />
+              } @else {
+                <app-loader label="Fin de journée : analyse de tes réponses…" />
+              }
+            } @else {
+              @if (error(); as error) {
+                <p class="simulation__error" role="alert">{{ error }}</p>
+              }
+              <app-reply-box
+                [eventKey]="currentIndex()"
+                [urgent]="currentEvent()?.urgent ?? false"
+                [disabled]="sending() || isDayOver()"
+                (replySent)="sendReply($event)"
+                (timedOut)="onTimeout()"
+              />
+            }
+          </section>
+
+          <aside class="simulation__gauges" aria-label="Jauges de ta journée">
+            <h2>Ta journée</h2>
+            <app-gauge-panel [gauges]="simulation.gauges" [lastEffects]="lastEffects()" />
+          </aside>
+        </div>
+      }
+    }
+  }
+</main>

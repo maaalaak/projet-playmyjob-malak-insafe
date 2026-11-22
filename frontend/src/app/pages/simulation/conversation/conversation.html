@@ -1,0 +1,28 @@
+<!-- column-reverse garde la conversation collée en bas, sur le dernier message -->
+<div class="conversation" aria-live="polite">
+  <ol class="conversation__messages">
+    @for (message of messages(); track message.id) {
+      @switch (message.author) {
+        @case ('narrator') {
+          <li class="conversation__narrator">{{ message.text }}</li>
+        }
+        @case ('player') {
+          <li class="conversation__bubble conversation__bubble--player">
+            <p>{{ message.text }}</p>
+            <small>Toi · {{ message.time }}</small>
+          </li>
+        }
+        @case ('character') {
+          @let character = characterOf(message);
+          <li class="conversation__row">
+            <span class="conversation__avatar" aria-hidden="true">{{ character?.avatar }}</span>
+            <div class="conversation__bubble">
+              <p>{{ message.text }}</p>
+              <small>{{ character?.name }} · {{ message.time }}</small>
+            </div>
+          </li>
+        }
+      }
+    }
+  </ol>
+</div>

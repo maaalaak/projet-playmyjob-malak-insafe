@@ -62,3 +62,13 @@ a {
     color: var(--mat-sys-error);
   }
 }
+
+// Cache un texte à l'écran tout en le laissant lisible par les lecteurs d'écran.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

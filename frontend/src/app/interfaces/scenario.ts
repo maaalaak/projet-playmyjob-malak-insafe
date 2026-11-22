@@ -7,7 +7,7 @@ export interface Character {
   avatar: string;
 }
 
-export interface WorkDocument {
+export interface ScenarioDocument {
   title: string;
   content: string;
 }
@@ -17,7 +17,7 @@ export interface DayEvent {
   characterId: string;
   message: string;
   urgent: boolean;
-  document: WorkDocument | null;
+  document: ScenarioDocument | null;
 }
 
 export interface Scenario {

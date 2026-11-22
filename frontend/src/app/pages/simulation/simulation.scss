@@ -1,0 +1,140 @@
+@use '@angular/material' as mat;
+
+.simulation {
+  flex: 1;
+  box-sizing: border-box;
+  min-height: calc(100dvh - 140px);
+  padding: 40px 24px;
+  background: radial-gradient(circle at top, #263266, var(--color-primary) 60%);
+  color: var(--color-on-primary);
+
+  // Sur le fond sombre, les boutons Material par défaut se confondent avec la page.
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--color-accent),
+      filled-label-text-color: #ffffff,
+      filled-disabled-container-color: rgb(255 255 255 / 12%),
+      filled-disabled-label-text-color: rgb(255 255 255 / 45%),
+      outlined-label-text-color: #ffffff,
+      outlined-outline-color: rgb(255 255 255 / 40%),
+    )
+  );
+
+  @media (max-width: 600px) {
+    padding: 24px 16px;
+  }
+
+  h1,
+  h2 {
+    color: inherit;
+  }
+
+  &__intro {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    animation: intro-in 0.6s ease-out;
+
+    h1 {
+      margin: 8px 0 16px;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+    }
+
+    p {
+      opacity: 0.85;
+    }
+  }
+
+  &__job {
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  &__team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin: 32px 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 120px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgb(255 255 255 / 8%);
+
+      span {
+        font-size: 2.5rem;
+      }
+
+      small {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &__note {
+    margin-top: 24px;
+    font-size: 0.875rem;
+  }
+
+  &__workplace {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 240px;
+    gap: 32px;
+    max-width: 1240px;
+    margin: 0 auto;
+
+    @media (max-width: 1000px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+
+  &__error {
+    margin: 0;
+    color: var(--color-accent);
+  }
+
+  &__gauges h2 {
+    margin: 0 0 16px;
+    font-size: 1.125rem;
+  }
+}
+
+@keyframes intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

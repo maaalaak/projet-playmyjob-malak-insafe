@@ -1,0 +1,26 @@
+<div class="reply-box">
+  @if (secondsLeft(); as seconds) {
+    <div class="reply-box__countdown" [class.reply-box__countdown--critical]="seconds <= criticalSeconds" role="timer">
+      <span>⏰ Urgent : réponds vite !</span>
+      <strong>{{ seconds }} s</strong>
+      <div class="reply-box__countdown-track">
+        <div class="reply-box__countdown-fill" [style.width.%]="(seconds / totalSeconds) * 100"></div>
+      </div>
+    </div>
+  }
+
+  <form class="reply-box__form" [formGroup]="form" (ngSubmit)="send()">
+    <label class="visually-hidden" for="reply">Ta réponse</label>
+    <textarea
+      id="reply"
+      rows="3"
+      formControlName="reply"
+      [maxlength]="maxLength"
+      [placeholder]="disabled() ? 'Attends la réaction…' : 'Écris ce que tu fais ou ce que tu réponds… (Entrée pour envoyer)'"
+      (keydown.enter)="onEnter($event)"
+    ></textarea>
+    <button matButton="filled" type="submit" [disabled]="disabled() || reply.invalid || !reply.value.trim()">
+      Envoyer
+    </button>
+  </form>
+</div>

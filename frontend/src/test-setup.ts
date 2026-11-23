@@ -30,3 +30,6 @@ class MemoryStorage implements Storage {
 if (typeof globalThis.localStorage === 'undefined') {
   Object.defineProperty(globalThis, 'localStorage', { value: new MemoryStorage() });
 }
+
+// Chaque test démarre sans session, quel que soit l'ordre dans lequel les fichiers sont lancés.
+beforeEach(() => localStorage.clear());

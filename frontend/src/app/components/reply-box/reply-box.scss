@@ -44,6 +44,31 @@
     }
   }
 
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    @media (max-width: 600px) {
+      flex-direction: row;
+
+      button {
+        flex: 1;
+      }
+    }
+  }
+
+  &__mic--listening {
+    animation: mic-pulse 1.2s ease-in-out infinite;
+  }
+
+  &__status {
+    min-height: 1.25em;
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
   textarea {
     flex: 1;
     box-sizing: border-box;
@@ -64,6 +89,12 @@
       border-color: var(--color-accent);
       outline: none;
     }
+  }
+}
+
+@keyframes mic-pulse {
+  50% {
+    box-shadow: 0 0 0 6px rgb(255 107 74 / 35%);
   }
 }
 

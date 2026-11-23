@@ -1,8 +1,10 @@
-import { Component, effect, input, InputSignal, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, InputSignal, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { interval, Subscription, take } from 'rxjs';
 import { ReplyForm } from '../../interfaces/reply-form';
+import { SpeechService } from '../../services/speech-service';
+import { VoiceInputService } from '../../services/voice-input-service';
 
 const URGENT_SECONDS: number = 45;
 const CRITICAL_SECONDS: number = 10;
@@ -15,6 +17,9 @@ const REPLY_MAX_LENGTH: number = 500;
   templateUrl: './reply-box.html',
 })
 export class ReplyBox {
+  protected readonly voiceInput: VoiceInputService = inject(VoiceInputService);
+  private readonly speechService: SpeechService = inject(SpeechService);
+
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
   public readonly urgent: InputSignal<boolean> = input<boolean>(false);
   /** Change à chaque nouvelle situation : le champ est vidé et le compte à rebours repart. */
@@ -37,8 +42,17 @@ export class ReplyBox {
   constructor() {
     effect(() => {
       this.eventKey();
+      this.voiceInput.stop();
       this.reply.reset();
     });
+
+    effect(() => {
+      if (this.disabled()) {
+        this.voiceInput.stop();
+      }
+    });
+
+    inject(DestroyRef).onDestroy(() => this.voiceInput.stop());
 
     effect((onCleanup: (cleanup: () => void) => void) => {
       this.eventKey();
@@ -60,7 +74,24 @@ export class ReplyBox {
       return;
     }
 
+    this.voiceInput.stop();
     this.replySent.emit(text);
+  }
+
+  /** Démarre ou arrête le micro. Ce que tu dis s'ajoute après ce que tu as déjà écrit. */
+  protected toggleMicrophone(): void {
+    if (this.voiceInput.listening()) {
+      this.voiceInput.stop();
+      return;
+    }
+
+    this.speechService.stop();
+    const typedText: string = this.reply.value.trim();
+
+    this.voiceInput.start((spokenText: string) => {
+      const fullText: string = typedText ? `${typedText} ${spokenText}` : spokenText;
+      this.reply.setValue(fullText.slice(0, REPLY_MAX_LENGTH));
+    });
   }
 
   protected onEnter(event: Event): void {

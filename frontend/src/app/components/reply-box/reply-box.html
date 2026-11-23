@@ -19,8 +19,31 @@
       [placeholder]="disabled() ? 'Attends la réaction…' : 'Écris ce que tu fais ou ce que tu réponds… (Entrée pour envoyer)'"
       (keydown.enter)="onEnter($event)"
     ></textarea>
-    <button matButton="filled" type="submit" [disabled]="disabled() || reply.invalid || !reply.value.trim()">
-      Envoyer
-    </button>
+    <div class="reply-box__actions">
+      @if (voiceInput.isSupported) {
+        <button
+          matButton="outlined"
+          type="button"
+          class="reply-box__mic"
+          [class.reply-box__mic--listening]="voiceInput.listening()"
+          [attr.aria-pressed]="voiceInput.listening()"
+          [disabled]="disabled()"
+          (click)="toggleMicrophone()"
+        >
+          {{ voiceInput.listening() ? '⏹ Arrêter' : '🎤 Parler' }}
+        </button>
+      }
+      <button matButton="filled" type="submit" [disabled]="disabled() || reply.invalid || !reply.value.trim()">
+        Envoyer
+      </button>
+    </div>
   </form>
+
+  <p class="reply-box__status" aria-live="polite">
+    @if (voiceInput.listening()) {
+      🎙️ Je t'écoute… Parle, puis relis ta réponse avant de l'envoyer.
+    } @else if (voiceInput.error(); as error) {
+      {{ error }}
+    }
+  </p>
 </div>

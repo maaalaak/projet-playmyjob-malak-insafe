@@ -53,6 +53,16 @@
                 <span>🕘 {{ event.time }}</span>
               }
               <span>Situation {{ currentIndex() + (isDayOver() ? 0 : 1) }} sur {{ simulation.scenario.events.length }}</span>
+              @if (speechService.isSupported) {
+                <button
+                  class="simulation__sound"
+                  type="button"
+                  [attr.aria-pressed]="!speechService.muted()"
+                  (click)="speechService.toggleMuted()"
+                >
+                  {{ speechService.muted() ? '🔇 Son coupé' : '🔊 Son activé' }}
+                </button>
+              }
             </header>
 
             <app-conversation [messages]="messages()" [characters]="simulation.scenario.characters" />

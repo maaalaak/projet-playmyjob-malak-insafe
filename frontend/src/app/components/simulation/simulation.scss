@@ -117,8 +117,28 @@
     gap: 8px 20px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgb(255 255 255 / 12%);
+    align-items: center;
     font-size: 0.875rem;
-    opacity: 0.85;
+
+    > span {
+      opacity: 0.85;
+    }
+  }
+
+  &__sound {
+    margin-left: auto;
+    padding: 4px 12px;
+    border: 1px solid rgb(255 255 255 / 25%);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: rgb(255 255 255 / 10%);
+    }
   }
 
   &__error {

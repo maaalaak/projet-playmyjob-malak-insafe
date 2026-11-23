@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, DestroyRef, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, Signal, signal, untracked, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { ChatMessage } from '../../interfaces/chat-message';
 import { Character, DayEvent, Mood } from '../../interfaces/scenario';
 import { Exchange, GaugeEffects, Simulation } from '../../interfaces/simulation';
 import { SimulationService } from '../../services/simulation-service';
+import { SpeechService } from '../../services/speech-service';
 import { ErrorMessage } from '../error-message/error-message';
 import { GaugePanel } from '../gauge-panel/gauge-panel';
 import { Loader } from '../loader/loader';
@@ -29,6 +30,9 @@ export class SimulationPage {
   private readonly router: Router = inject(Router);
   private readonly simulationService: SimulationService = inject(SimulationService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  protected readonly speechService: SpeechService = inject(SpeechService);
+  /** Nombre de messages déjà passés à la voix, pour ne lire que les nouveaux. */
+  private spokenCount: number = 0;
 
   protected readonly step: WritableSignal<SimulationStep> = signal<SimulationStep>('starting');
   protected readonly simulation: WritableSignal<Simulation | null> = signal<Simulation | null>(null);
@@ -59,6 +63,8 @@ export class SimulationPage {
 
   constructor() {
     this.start();
+    effect(() => this.speakNewMessages(this.messages()));
+    this.destroyRef.onDestroy(() => this.speechService.stop());
   }
 
   protected start(): void {
@@ -162,6 +168,31 @@ export class SimulationPage {
 
       return messages;
     });
+  }
+
+  /** Lit à voix haute les nouvelles répliques des personnages, dans l'ordre (réaction puis situation suivante). */
+  private speakNewMessages(messages: ChatMessage[]): void {
+    const step: SimulationStep = this.step();
+    if (step !== 'playing' && step !== 'finishing') {
+      return;
+    }
+
+    const newLines: ChatMessage[] = messages.slice(this.spokenCount).filter((message: ChatMessage) => message.author === 'character');
+    this.spokenCount = messages.length;
+
+    if (newLines.length === 0) {
+      return;
+    }
+
+    untracked(() => {
+      this.speechService.stop();
+      newLines.forEach((message: ChatMessage) => this.speechService.speak(message.text, this.characterIndex(message.characterId)));
+    });
+  }
+
+  private characterIndex(characterId: string | null): number {
+    const characters: Character[] = this.simulation()?.scenario.characters ?? [];
+    return Math.max(0, characters.findIndex((character: Character) => character.id === characterId));
   }
 
   private hasEmptyGauge(simulation: Simulation): boolean {

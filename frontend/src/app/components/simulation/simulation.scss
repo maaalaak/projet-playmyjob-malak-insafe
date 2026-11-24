@@ -111,6 +111,11 @@
     flex-direction: column;
     gap: 16px;
     min-width: 0;
+
+    // Sur une seule colonne, la conversation passe en premier : chaque bulle montre déjà qui parle.
+    @media (max-width: 1000px) {
+      order: -1;
+    }
   }
 
   &__bar {

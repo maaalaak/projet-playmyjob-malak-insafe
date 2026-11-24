@@ -48,4 +48,28 @@
       border-bottom-color: var(--color-accent);
     }
   }
+
+  // Sur téléphone : logo et bouton sur la première ligne, liens sur toute la largeur en dessous.
+  @media (max-width: 700px) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 16px;
+    padding: 12px 16px;
+
+    &__actions {
+      display: contents;
+    }
+
+    &__auth {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    &__nav {
+      grid-row: 2;
+      grid-column: 1 / -1;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  }
 }

@@ -1,4 +1,6 @@
+import { setTimeout as wait } from 'node:timers/promises';
 import { z, type ZodType } from 'zod';
+import { AiProviderError } from '../errors/ai-provider-error.ts';
 import { HttpError } from '../errors/http-error.ts';
 import type { AiProvider, JsonGenerator } from '../models/ai.ts';
 import type { Offer } from '../models/offer.ts';
@@ -16,6 +18,8 @@ import type { Simulation } from '../models/simulation.ts';
 import { buildAnalysisPrompt, buildReplyPrompt, buildScenarioPrompt } from './ai-prompts.ts';
 import { geminiService } from './gemini.service.ts';
 import { groqService } from './groq.service.ts';
+
+const RETRY_DELAY_MS: number = 2_000;
 
 class AiService {
   private readonly generators: Record<AiProvider, JsonGenerator> = { gemini: geminiService, groq: groqService };
@@ -41,10 +45,25 @@ class AiService {
   /** Gemini est appelé en premier, et Groq prend le relais s'il échoue. */
   private async generate<T>(prompt: string, schema: ZodType<T>): Promise<T> {
     try {
-      return await this.callProvider('gemini', prompt, schema);
+      return await this.callWithRetry('gemini', prompt, schema);
     } catch (error: unknown) {
       console.warn(`Gemini indisponible, bascule sur Groq : ${error instanceof Error ? error.message : error}`);
-      return this.callProvider('groq', prompt, schema);
+      return this.callWithRetry('groq', prompt, schema);
+    }
+  }
+
+  /** Une IA surchargée (429, 503…) l'est souvent pour quelques secondes : on lui laisse une seconde chance. */
+  private async callWithRetry<T>(provider: AiProvider, prompt: string, schema: ZodType<T>): Promise<T> {
+    try {
+      return await this.callProvider(provider, prompt, schema);
+    } catch (error: unknown) {
+      if (!(error instanceof AiProviderError) || !error.temporary) {
+        throw error;
+      }
+
+      console.warn(`${error.message}, nouvel essai dans ${RETRY_DELAY_MS / 1000} s`);
+      await wait(RETRY_DELAY_MS);
+      return this.callProvider(provider, prompt, schema);
     }
   }
 

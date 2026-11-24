@@ -1,4 +1,5 @@
 import { env } from '../config/env.ts';
+import { AiProviderError } from '../errors/ai-provider-error.ts';
 import { HttpError } from '../errors/http-error.ts';
 import type { JsonGenerator } from '../models/ai.ts';
 
@@ -22,7 +23,7 @@ class GeminiService implements JsonGenerator {
     });
 
     if (!response.ok) {
-      throw new HttpError(502, `Gemini a répondu ${response.status}`);
+      throw AiProviderError.fromStatus('Gemini', response.status);
     }
 
     const body: GeminiResponse = (await response.json()) as GeminiResponse;

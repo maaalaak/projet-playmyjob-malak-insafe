@@ -32,6 +32,14 @@ html {
   --color-text-muted: #5b6178;
   --color-border: #e8dfd2;
   --font-display: 'Fraunces', serif;
+
+  // Le titre des boîtes de dialogue reprend la police des titres du site.
+  @include mat.dialog-overrides(
+    (
+      subhead-font: var(--font-display),
+      subhead-weight: 700,
+    )
+  );
 }
 
 body {

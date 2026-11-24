@@ -16,7 +16,7 @@
 
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
       <mat-label>Contrat</mat-label>
-      <mat-select formControlName="contract">
+      <mat-select formControlName="contract" [canSelectNullableOptions]="true">
         @for (option of contractOptions; track option.label) {
           <mat-option [value]="option.value">{{ option.label }}</mat-option>
         }

@@ -1,7 +1,10 @@
 import { z } from 'zod';
+import { AI_PROVIDERS } from '../models/ai.ts';
 
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
+  /** L'IA appelée en premier : l'autre prend le relais si elle échoue. */
+  AI_PRIMARY: z.enum(AI_PROVIDERS).default('gemini'),
   GEMINI_API_KEY: z.string().min(1),
   GEMINI_MODEL: z.string().min(1),
   GROQ_API_KEY: z.string().min(1),

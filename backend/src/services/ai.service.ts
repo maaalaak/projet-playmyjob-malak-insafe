@@ -1,8 +1,9 @@
 import { setTimeout as wait } from 'node:timers/promises';
 import { z, type ZodType } from 'zod';
+import { env } from '../config/env.ts';
 import { AiProviderError } from '../errors/ai-provider-error.ts';
 import { HttpError } from '../errors/http-error.ts';
-import type { AiProvider, JsonGenerator } from '../models/ai.ts';
+import { AI_PROVIDERS, type AiProvider, type JsonGenerator } from '../models/ai.ts';
 import type { Offer } from '../models/offer.ts';
 import {
   characterReplySchema,
@@ -23,6 +24,10 @@ const RETRY_DELAY_MS: number = 2_000;
 
 class AiService {
   private readonly generators: Record<AiProvider, JsonGenerator> = { gemini: geminiService, groq: groqService };
+  private readonly providerOrder: AiProvider[] = [
+    env.AI_PRIMARY,
+    ...AI_PROVIDERS.filter((provider: AiProvider) => provider !== env.AI_PRIMARY),
+  ];
 
   public generateScenario(offer: Offer): Promise<Scenario> {
     return this.generate(buildScenarioPrompt(offer), scenarioSchema);
@@ -42,13 +47,15 @@ class AiService {
     return this.generate(buildAnalysisPrompt(simulation, gameOver), simulationResultSchema);
   }
 
-  /** Gemini est appelé en premier, et Groq prend le relais s'il échoue. */
+  /** L'IA choisie dans .env (AI_PRIMARY) est appelée en premier, et l'autre prend le relais si elle échoue. */
   private async generate<T>(prompt: string, schema: ZodType<T>): Promise<T> {
+    const [primary, backup]: AiProvider[] = this.providerOrder;
+
     try {
-      return await this.callWithRetry('gemini', prompt, schema);
+      return await this.callWithRetry(primary, prompt, schema);
     } catch (error: unknown) {
-      console.warn(`Gemini indisponible, bascule sur Groq : ${error instanceof Error ? error.message : error}`);
-      return this.callWithRetry('groq', prompt, schema);
+      console.warn(`${primary} indisponible, bascule sur ${backup} : ${error instanceof Error ? error.message : error}`);
+      return this.callWithRetry(backup, prompt, schema);
     }
   }
 

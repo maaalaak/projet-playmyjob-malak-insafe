@@ -12,8 +12,8 @@ Projet du cours d'Angular, Master MIAGE, Université Paris 1 Panthéon-Sorbonne,
 |---|---|---|---|
 | 1 | Authentification | Il crée un compte, se connecte et se déconnecte. Les pages privées sont protégées. | `/api/auth` |
 | 2 | Offres | Il cherche de vraies offres (Adzuna) par métier, ville et contrat, avec une pagination, puis consulte le détail d'une offre. | `/api/offers` |
-| 3 | Simulation | Il vit une journée générée par l'IA : conversation libre avec les personnages, humeurs, urgences chronométrées, documents et jauges. | `/api/simulations` |
-| 4 | Résultat | Il voit son score sur 100, un titre, ses points forts, un conseil et le résumé de sa journée. | `/api/simulations/:id` |
+| 3 | Simulation | Il badge à son arrivée, puis vit une journée générée par l'IA dans une scène animée : l'équipe dans le décor du lieu, répliques écrites lettre par lettre, humeurs, horloge et soleil qui avancent, urgences chronométrées, documents, jauges et effets après chaque réponse. | `/api/simulations` |
+| 4 | Résultat | Il voit son score sur 100, le verdict d'embauche du manager (avec confettis s'il est embauché), un titre, ses points forts, un conseil et le résumé de sa journée. | `/api/simulations/:id` |
 | 5 | Favoris | Il garde des offres pour plus tard et les retire après une confirmation. | `/api/favorites` |
 | 6 | Profil et historique | Il modifie ses informations, voit le radar de ses compétences et l'historique de ses parties, et peut les supprimer. | `/api/profile`, `/api/simulations` |
 
@@ -123,7 +123,7 @@ Toutes les routes, sauf l'authentification et les offres, demandent l'en-tête `
 
 ```bash
 cd frontend
-npm test -- --watch=false   # 64 tests unitaires (composants, services, garde, intercepteur, pipes)
+npm test -- --watch=false   # 78 tests unitaires (composants, services, garde, intercepteur, pipes)
 npm run build               # compilation de production
 
 cd ../backend

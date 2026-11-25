@@ -40,8 +40,8 @@
           <section class="simulation__main">
             <header class="simulation__bar">
               <span>📍 {{ simulation.scenario.setting }}</span>
-              @if (currentEvent(); as event) {
-                <span>🕘 {{ event.time }}</span>
+              @if (clockTime(); as time) {
+                <app-day-clock [time]="time" />
               }
               <span>Situation {{ currentIndex() + (isDayOver() ? 0 : 1) }} sur {{ simulation.scenario.events.length }}</span>
               @if (speechService.isSupported) {
@@ -63,6 +63,7 @@
               [mood]="speakerMood()"
               [thinking]="sending()"
               [line]="currentLine()"
+              [time]="clockTime() ?? '09:00'"
             />
 
             <app-conversation [messages]="history()" [characters]="simulation.scenario.characters" />

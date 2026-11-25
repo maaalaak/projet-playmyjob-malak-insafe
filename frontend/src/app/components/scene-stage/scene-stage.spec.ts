@@ -49,6 +49,18 @@ describe('SceneStage', () => {
     expect(element.querySelector('.scene-stage__caret')).toBeNull();
   });
 
+  it('moves the sun and colours the sky with the time of day', () => {
+    fixture.componentRef.setInput('time', '13:00');
+    fixture.detectChanges();
+    const sun: HTMLElement = element.querySelector('.scene-stage__sun')!;
+    expect(sun.style.left).toBe('50%');
+    expect(sun.style.top).toBe('20%');
+
+    fixture.componentRef.setInput('time', '18:00');
+    fixture.detectChanges();
+    expect(element.querySelector('.scene-stage__window--evening')).not.toBeNull();
+  });
+
   it('shows thinking dots while the character prepares an answer', () => {
     fixture.componentRef.setInput('thinking', true);
     fixture.detectChanges();

@@ -1,0 +1,7 @@
+<span class="day-clock">
+  <span class="day-clock__face" aria-hidden="true">
+    <span class="day-clock__hand day-clock__hand--hour" [style.transform]="'rotate(' + hourAngle() + 'deg)'"></span>
+    <span class="day-clock__hand day-clock__hand--minute" [style.transform]="'rotate(' + minuteAngle() + 'deg)'"></span>
+  </span>
+  <time class="day-clock__time">{{ time() }}</time>
+</span>

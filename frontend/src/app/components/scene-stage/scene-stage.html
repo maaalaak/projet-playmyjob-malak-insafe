@@ -1,6 +1,8 @@
 <section class="scene-stage scene-stage--{{ theme().name }}" [attr.aria-label]="'La scène : ' + setting()">
   <div class="scene-stage__decor" aria-hidden="true">
-    <div class="scene-stage__window"></div>
+    <div class="scene-stage__window scene-stage__window--{{ skyPhase() }}">
+      <span class="scene-stage__sun" [style.left.%]="sunLeft()" [style.top.%]="sunTop()"></span>
+    </div>
     <span class="scene-stage__prop scene-stage__prop--left">{{ theme().props[0] }}</span>
     <span class="scene-stage__prop scene-stage__prop--right">{{ theme().props[1] }}</span>
     <div class="scene-stage__floor"></div>

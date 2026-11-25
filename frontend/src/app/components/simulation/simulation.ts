@@ -13,6 +13,7 @@ import { GaugePanel } from '../gauge-panel/gauge-panel';
 import { Loader } from '../loader/loader';
 import { httpErrorMessage } from '../../utils/http-error-message';
 import { Conversation } from '../conversation/conversation';
+import { DayClock } from '../day-clock/day-clock';
 import { ReplyBox } from '../reply-box/reply-box';
 import { SceneStage } from '../scene-stage/scene-stage';
 import { WorkDocument } from '../work-document/work-document';
@@ -20,7 +21,7 @@ import { WorkDocument } from '../work-document/work-document';
 type SimulationStep = 'starting' | 'intro' | 'playing' | 'finishing';
 
 @Component({
-  imports: [MatButtonModule, ErrorMessage, GaugePanel, Loader, Conversation, ReplyBox, SceneStage, WorkDocument],
+  imports: [MatButtonModule, ErrorMessage, GaugePanel, Loader, Conversation, DayClock, ReplyBox, SceneStage, WorkDocument],
   selector: 'app-simulation',
   styleUrl: './simulation.scss',
   templateUrl: './simulation.html',
@@ -47,6 +48,10 @@ export class SimulationPage {
   });
   protected readonly currentEvent: Signal<DayEvent | null> = computed(() =>
     this.isDayOver() ? null : (this.simulation()?.scenario.events[this.currentIndex()] ?? null),
+  );
+  /** L'heure de la situation en cours, ou de la dernière une fois la journée finie. */
+  protected readonly clockTime: Signal<string | null> = computed(
+    () => (this.currentEvent() ?? this.simulation()?.scenario.events[this.currentIndex() - 1])?.time ?? null,
   );
   protected readonly speaker: Signal<Character | null> = computed(() => {
     const simulation: Simulation | null = this.simulation();

@@ -1,0 +1,50 @@
+<section class="scene-stage scene-stage--{{ theme().name }}" [attr.aria-label]="'La scène : ' + setting()">
+  <div class="scene-stage__decor" aria-hidden="true">
+    <div class="scene-stage__window"></div>
+    <span class="scene-stage__prop scene-stage__prop--left">{{ theme().props[0] }}</span>
+    <span class="scene-stage__prop scene-stage__prop--right">{{ theme().props[1] }}</span>
+    <div class="scene-stage__floor"></div>
+  </div>
+
+  <!-- Les lecteurs d'écran lisent la réplique entière d'un coup, pas l'écriture lettre par lettre. -->
+  <p class="visually-hidden" aria-live="polite">{{ speakerName() }} : {{ line() }}</p>
+
+  @if (line() || thinking()) {
+    <button type="button" class="scene-stage__bubble" tabindex="-1" aria-hidden="true" title="Afficher toute la réplique" (click)="skipTyping()">
+      @if (thinking()) {
+        <span class="scene-stage__dots"><span></span><span></span><span></span></span>
+      } @else {
+        {{ typedLine() }}
+        @if (isTyping()) {
+          <span class="scene-stage__caret"></span>
+        }
+      }
+    </button>
+  }
+
+  <ul class="scene-stage__cast">
+    @for (character of characters(); track character.id) {
+      @let active = character.id === speakerId();
+      <li
+        class="scene-stage__actor"
+        [class.scene-stage__actor--active]="active"
+        [class.scene-stage__actor--waiting]="speakerId() !== null && !active"
+        [style.--order]="$index"
+      >
+        <div class="scene-stage__figure scene-stage__figure--{{ active ? mood() : 'idle' }}">
+          @if (active) {
+            <span class="scene-stage__mood" aria-hidden="true">{{ moodIcon() }}</span>
+          }
+          <span class="scene-stage__body" aria-hidden="true">{{ character.avatar }}</span>
+        </div>
+        <span class="scene-stage__name">
+          <strong>{{ character.name }}</strong>
+          <small>{{ character.role }}</small>
+          @if (active) {
+            <span class="visually-hidden">, parle, humeur : {{ moodLabel() }}</span>
+          }
+        </span>
+      </li>
+    }
+  </ul>
+</section>

@@ -37,15 +37,6 @@
     @default {
       @if (simulation(); as simulation) {
         <div class="simulation__workplace">
-          <aside class="simulation__side">
-            @if (speaker(); as speaker) {
-              <app-character-avatar [character]="speaker" [mood]="speakerMood()" [thinking]="sending()" />
-            }
-            @if (currentEvent()?.document; as document) {
-              <app-work-document [document]="document" />
-            }
-          </aside>
-
           <section class="simulation__main">
             <header class="simulation__bar">
               <span>📍 {{ simulation.scenario.setting }}</span>
@@ -65,7 +56,16 @@
               }
             </header>
 
-            <app-conversation [messages]="messages()" [characters]="simulation.scenario.characters" />
+            <app-scene-stage
+              [setting]="simulation.scenario.setting"
+              [characters]="simulation.scenario.characters"
+              [speakerId]="speaker()?.id ?? null"
+              [mood]="speakerMood()"
+              [thinking]="sending()"
+              [line]="currentLine()"
+            />
+
+            <app-conversation [messages]="history()" [characters]="simulation.scenario.characters" />
 
             @if (step() === 'finishing') {
               @if (error(); as error) {
@@ -87,9 +87,14 @@
             }
           </section>
 
-          <aside class="simulation__gauges" aria-label="Jauges de ta journée">
-            <h2>Ta journée</h2>
-            <app-gauge-panel [gauges]="simulation.gauges" [lastEffects]="lastEffects()" />
+          <aside class="simulation__side">
+            <section class="simulation__gauges" aria-label="Jauges de ta journée">
+              <h2>Ta journée</h2>
+              <app-gauge-panel [gauges]="simulation.gauges" [lastEffects]="lastEffects()" />
+            </section>
+            @if (currentEvent()?.document; as document) {
+              <app-work-document [document]="document" />
+            }
           </aside>
         </div>
       }

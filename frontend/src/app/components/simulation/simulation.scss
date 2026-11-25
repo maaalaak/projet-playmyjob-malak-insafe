@@ -90,7 +90,7 @@
 
   &__workplace {
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) 240px;
+    grid-template-columns: minmax(0, 1fr) 280px;
     gap: 32px;
     max-width: 1240px;
     margin: 0 auto;
@@ -111,11 +111,6 @@
     flex-direction: column;
     gap: 16px;
     min-width: 0;
-
-    // Sur une seule colonne, la conversation passe en premier : chaque bulle montre déjà qui parle.
-    @media (max-width: 1000px) {
-      order: -1;
-    }
   }
 
   &__bar {

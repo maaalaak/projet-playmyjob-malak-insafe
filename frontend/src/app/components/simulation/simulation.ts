@@ -12,15 +12,15 @@ import { ErrorMessage } from '../error-message/error-message';
 import { GaugePanel } from '../gauge-panel/gauge-panel';
 import { Loader } from '../loader/loader';
 import { httpErrorMessage } from '../../utils/http-error-message';
-import { CharacterAvatar } from '../character-avatar/character-avatar';
 import { Conversation } from '../conversation/conversation';
 import { ReplyBox } from '../reply-box/reply-box';
+import { SceneStage } from '../scene-stage/scene-stage';
 import { WorkDocument } from '../work-document/work-document';
 
 type SimulationStep = 'starting' | 'intro' | 'playing' | 'finishing';
 
 @Component({
-  imports: [MatButtonModule, ErrorMessage, GaugePanel, Loader, CharacterAvatar, Conversation, ReplyBox, WorkDocument],
+  imports: [MatButtonModule, ErrorMessage, GaugePanel, Loader, Conversation, ReplyBox, SceneStage, WorkDocument],
   selector: 'app-simulation',
   styleUrl: './simulation.scss',
   templateUrl: './simulation.html',
@@ -60,6 +60,9 @@ export class SimulationPage {
     return lastExchange && lastSpeakerId === this.speaker()?.id ? lastExchange.mood : 'neutre';
   });
   protected readonly messages: Signal<ChatMessage[]> = computed(() => this.buildMessages());
+  /** La dernière réplique s'affiche dans la bulle de la scène, la conversation garde tout ce qui précède. */
+  protected readonly currentLine: Signal<string> = computed(() => this.messages().at(-1)?.text ?? '');
+  protected readonly history: Signal<ChatMessage[]> = computed(() => this.messages().slice(0, -1));
 
   constructor() {
     this.start();

@@ -1,0 +1,88 @@
+// Le verdict tombe comme un coup de tampon, une fois que le score a fini de défiler.
+.hiring-verdict {
+  display: inline-block;
+  margin: 16px 0 0;
+  padding: 8px 18px;
+  border: 3px solid currentColor;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transform: rotate(-4deg);
+  animation: stamp 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) 1.3s backwards;
+
+  &--hired {
+    color: #4fd38a;
+  }
+
+  &--trial {
+    color: #f5b544;
+  }
+
+  &--declined {
+    color: var(--color-accent);
+  }
+
+  &__confetti {
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    span {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 16px;
+      border-radius: 2px;
+      background: #ffd166;
+      animation: confetti-fall 3s ease-in backwards;
+
+      &:nth-child(4n + 1) {
+        background: #3fb871;
+      }
+
+      &:nth-child(4n + 2) {
+        background: var(--color-accent);
+      }
+
+      &:nth-child(4n + 3) {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7cc4ff;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+
+    &__confetti {
+      display: none;
+    }
+  }
+}
+
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(2.6) rotate(-14deg);
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(105vh) translateX(40px) rotate(720deg);
+  }
+}

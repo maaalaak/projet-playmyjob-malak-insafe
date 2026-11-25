@@ -11,6 +11,7 @@
           <p class="result__job">{{ simulation.offer.title }} · {{ simulation.offer.company }}</p>
           <h1>{{ result.title }}</h1>
           <p class="result__subtitle">Ta compatibilité avec ce poste, d'après ta journée.</p>
+          <app-hiring-verdict [score]="result.score" />
         </div>
       </section>
 

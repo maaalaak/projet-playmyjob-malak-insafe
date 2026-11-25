@@ -18,6 +18,8 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 32px;
+    // Coupe le tampon du verdict pendant son arrivée, quand il est encore très grand.
+    overflow: hidden;
     padding: 32px;
     border-radius: 24px;
     background: var(--color-primary);

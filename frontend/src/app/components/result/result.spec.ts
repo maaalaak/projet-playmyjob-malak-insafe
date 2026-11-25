@@ -37,5 +37,6 @@ describe('Result', () => {
     expect(element.querySelector('app-score-ring [role="img"]')?.getAttribute('aria-label')).toBe('Score : 78 sur 100');
     expect(element.querySelectorAll('.result__strengths li').length).toBe(2);
     expect(element.textContent).toContain('Continue à expliquer tes décisions.');
+    expect(element.querySelector('.hiring-verdict--hired')).not.toBeNull();
   });
 });

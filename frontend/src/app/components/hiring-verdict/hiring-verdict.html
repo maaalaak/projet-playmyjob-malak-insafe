@@ -1,0 +1,14 @@
+<p class="hiring-verdict hiring-verdict--{{ verdict().level }}">{{ verdict().stamp }}</p>
+
+@if (verdict().level === 'hired') {
+  <!-- Chaque confetti a sa place, son retard et sa durée, calculés à partir de son numéro. -->
+  <div class="hiring-verdict__confetti" aria-hidden="true">
+    @for (piece of confetti; track piece) {
+      <span
+        [style.left.%]="(piece * 37) % 95"
+        [style.animation-delay.s]="1.4 + (piece % 8) * 0.15"
+        [style.animation-duration.s]="2.6 + (piece % 5) * 0.4"
+      ></span>
+    }
+  </div>
+}

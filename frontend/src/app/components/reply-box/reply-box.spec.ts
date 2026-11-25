@@ -73,4 +73,22 @@ describe('ReplyBox microphone', () => {
     expect(stopSpeaking).toHaveBeenCalled();
     expect(textarea.value).toBe('Je vérifie le dossier et je préviens le médecin.');
   });
+
+  it('suggests another browser when this one cannot listen', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: VoiceInputService,
+          useValue: { isSupported: false, listening: signal(false), error: signal(null), stop: vi.fn() },
+        },
+      ],
+    });
+    const fixture: ComponentFixture<ReplyBox> = TestBed.createComponent(ReplyBox);
+    fixture.componentRef.setInput('eventKey', 0);
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('.reply-box__mic')).toBeNull();
+    expect(element.querySelector('.reply-box__status')?.textContent).toContain('Google Chrome ou Edge');
+  });
 });

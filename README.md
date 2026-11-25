@@ -123,7 +123,7 @@ Toutes les routes, sauf l'authentification et les offres, demandent l'en-tête `
 
 ```bash
 cd frontend
-npm test -- --watch=false   # 63 tests unitaires (composants, services, garde, intercepteur, pipes)
+npm test -- --watch=false   # 64 tests unitaires (composants, services, garde, intercepteur, pipes)
 npm run build               # compilation de production
 
 cd ../backend

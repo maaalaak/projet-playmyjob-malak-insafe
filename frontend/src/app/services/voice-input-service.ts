@@ -11,6 +11,8 @@ const ERROR_MESSAGES: Readonly<Record<string, string>> = {
   'not-allowed': "Autorise l'accès au micro dans ton navigateur pour répondre à voix haute.",
   'no-speech': "Je n'ai rien entendu, réessaie en parlant plus près du micro.",
   'audio-capture': "Aucun micro n'a été trouvé sur cet appareil.",
+  network: "La reconnaissance vocale a besoin d'Internet et ne marche que dans Google Chrome ou Edge.",
+  'service-not-allowed': 'Ton navigateur bloque la reconnaissance vocale. Utilise Google Chrome ou Edge.',
 };
 const DEFAULT_ERROR: string = "Le micro s'est arrêté, tu peux réessayer ou écrire ta réponse.";
 
@@ -25,7 +27,7 @@ export class VoiceInputService {
   private readonly recognitionClass: SpeechRecognitionConstructor | undefined = this.findRecognitionClass();
   private recognition: SpeechRecognition | null = null;
 
-  /** Faux si le navigateur ne sait pas écouter (Firefox par exemple) : le bouton micro est alors caché. */
+  /** Faux si le navigateur ne sait pas écouter (Firefox par exemple) : le bouton micro est remplacé par un conseil. */
   public readonly isSupported: boolean = this.recognitionClass !== undefined;
   public readonly listening: WritableSignal<boolean> = signal<boolean>(false);
   public readonly error: WritableSignal<string | null> = signal<string | null>(null);

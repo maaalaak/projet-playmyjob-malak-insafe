@@ -44,6 +44,8 @@
       🎙️ Je t'écoute… Parle, puis relis ta réponse avant de l'envoyer.
     } @else if (voiceInput.error(); as error) {
       {{ error }}
+    } @else if (!voiceInput.isSupported) {
+      🎤 Pour répondre au micro, ouvre PlayMyJob dans Google Chrome ou Edge.
     }
   </p>
 </div>

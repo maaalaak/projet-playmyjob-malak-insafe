@@ -1,0 +1,45 @@
+@let day = simulation();
+<section class="day-intro">
+  <p class="day-intro__kicker">Jour 1 · Ton premier jour</p>
+
+  <div class="day-intro__lanyard" aria-hidden="true"></div>
+  <article class="day-intro__badge" [class.day-intro__badge--scanned]="scanned()" aria-label="Ton badge d'employé">
+    <header class="day-intro__company">{{ day.offer.company }}</header>
+    <div class="day-intro__identity">
+      <span class="day-intro__photo" aria-hidden="true">{{ initial() }}</span>
+      <div>
+        <strong>{{ playerName() }}</strong>
+        <span>{{ day.offer.title }}</span>
+      </div>
+    </div>
+    <footer class="day-intro__badge-footer">
+      <span class="day-intro__barcode" aria-hidden="true"></span>
+      <small>{{ badgeNumber() }}</small>
+    </footer>
+    @if (scanned()) {
+      <p class="day-intro__scan" role="status">✓ Badge validé</p>
+    }
+  </article>
+
+  <h1>{{ day.scenario.setting }}</h1>
+  <p class="day-intro__text">{{ day.scenario.intro }}</p>
+
+  <h2>Ton équipe du jour</h2>
+  <ul class="day-intro__team">
+    @for (character of day.scenario.characters; track character.id) {
+      <li [style.--order]="$index">
+        <span class="day-intro__avatar" aria-hidden="true">{{ character.avatar }}</span>
+        <strong>{{ character.name }}</strong>
+        <small>{{ character.role }}</small>
+      </li>
+    }
+  </ul>
+
+  <button matButton="filled" type="button" class="day-intro__start" [disabled]="scanned()" (click)="scanBadge()">
+    🪪 Badger et commencer ma journée
+  </button>
+
+  @if (day.source === 'secours') {
+    <p class="day-intro__note">L'IA ne répond pas pour le moment : tu joues une journée générique de secours.</p>
+  }
+</section>

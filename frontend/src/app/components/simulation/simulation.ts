@@ -1,11 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, DestroyRef, effect, inject, Signal, signal, untracked, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatMessage } from '../../interfaces/chat-message';
 import { Character, DayEvent, Mood } from '../../interfaces/scenario';
 import { Exchange, GaugeEffects, Simulation } from '../../interfaces/simulation';
+import { User } from '../../interfaces/user';
+import { AuthService } from '../../services/auth-service';
 import { SimulationService } from '../../services/simulation-service';
 import { SpeechService } from '../../services/speech-service';
 import { ErrorMessage } from '../error-message/error-message';
@@ -14,6 +15,7 @@ import { Loader } from '../loader/loader';
 import { httpErrorMessage } from '../../utils/http-error-message';
 import { Conversation } from '../conversation/conversation';
 import { DayClock } from '../day-clock/day-clock';
+import { DayIntro } from '../day-intro/day-intro';
 import { ReplyBox } from '../reply-box/reply-box';
 import { SceneStage } from '../scene-stage/scene-stage';
 import { WorkDocument } from '../work-document/work-document';
@@ -21,7 +23,7 @@ import { WorkDocument } from '../work-document/work-document';
 type SimulationStep = 'starting' | 'intro' | 'playing' | 'finishing';
 
 @Component({
-  imports: [MatButtonModule, ErrorMessage, GaugePanel, Loader, Conversation, DayClock, ReplyBox, SceneStage, WorkDocument],
+  imports: [ErrorMessage, GaugePanel, Loader, Conversation, DayClock, DayIntro, ReplyBox, SceneStage, WorkDocument],
   selector: 'app-simulation',
   styleUrl: './simulation.scss',
   templateUrl: './simulation.html',
@@ -30,10 +32,16 @@ export class SimulationPage {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly router: Router = inject(Router);
   private readonly simulationService: SimulationService = inject(SimulationService);
+  private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   protected readonly speechService: SpeechService = inject(SpeechService);
   /** Nombre de messages déjà passés à la voix, pour ne lire que les nouveaux. */
   private spokenCount: number = 0;
+
+  protected readonly playerName: Signal<string> = computed(() => {
+    const user: User | null = this.authService.user();
+    return user ? `${user.firstName} ${user.lastName}` : 'Nouvelle recrue';
+  });
 
   protected readonly step: WritableSignal<SimulationStep> = signal<SimulationStep>('starting');
   protected readonly simulation: WritableSignal<Simulation | null> = signal<Simulation | null>(null);

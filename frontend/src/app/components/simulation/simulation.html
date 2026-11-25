@@ -10,27 +10,7 @@
 
     @case ('intro') {
       @if (simulation(); as simulation) {
-        <section class="simulation__intro">
-          <p class="simulation__job">{{ simulation.offer.title }} · {{ simulation.offer.company }}</p>
-          <h1>{{ simulation.scenario.setting }}</h1>
-          <p>{{ simulation.scenario.intro }}</p>
-
-          <ul class="simulation__team">
-            @for (character of simulation.scenario.characters; track character.id) {
-              <li>
-                <span aria-hidden="true">{{ character.avatar }}</span>
-                <strong>{{ character.name }}</strong>
-                <small>{{ character.role }}</small>
-              </li>
-            }
-          </ul>
-
-          <button matButton="filled" type="button" (click)="begin()">Commencer ma journée</button>
-
-          @if (simulation.source === 'secours') {
-            <p class="simulation__note">L'IA ne répond pas pour le moment : tu joues une journée générique de secours.</p>
-          }
-        </section>
+        <app-day-intro [simulation]="simulation" [playerName]="playerName()" (started)="begin()" />
       }
     }
 

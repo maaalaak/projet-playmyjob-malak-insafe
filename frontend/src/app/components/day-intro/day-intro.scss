@@ -1,0 +1,287 @@
+.day-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+
+  h1 {
+    margin: 32px 0 8px;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    animation: rise-in 0.6s ease-out 0.9s backwards;
+  }
+
+  h2 {
+    margin: 32px 0 16px;
+    font-size: 1.1rem;
+    opacity: 0.85;
+    animation: rise-in 0.6s ease-out 1.2s backwards;
+  }
+
+  &__kicker {
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  &__text {
+    max-width: 600px;
+    margin: 0;
+    opacity: 0.85;
+    animation: rise-in 0.6s ease-out 1s backwards;
+  }
+
+  // Le cordon du badge.
+  &__lanyard {
+    width: 14px;
+    height: 48px;
+    border-radius: 0 0 4px 4px;
+    background: repeating-linear-gradient(180deg, var(--color-accent) 0 8px, #e85a3a 8px 16px);
+    animation: lanyard-in 0.5s ease-out backwards;
+  }
+
+  // Le badge tombe au bout de son cordon puis se balance avant de s'arrêter.
+  &__badge {
+    position: relative;
+    width: min(100%, 320px);
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 24px 50px rgb(0 0 0 / 35%);
+    color: var(--color-primary);
+    text-align: left;
+    transform-origin: top center;
+    animation: badge-drop 1.4s cubic-bezier(0.34, 1.4, 0.64, 1) backwards;
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+
+    &--scanned {
+      box-shadow:
+        0 0 0 4px #3fb871,
+        0 0 40px 8px rgb(63 184 113 / 55%);
+      transform: scale(1.04);
+    }
+  }
+
+  &__company {
+    padding: 10px 16px;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    strong {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+    }
+
+    div span {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+  }
+
+  &__photo {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-accent), #ffb36b);
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  &__badge-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 16px 14px;
+
+    small {
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-muted);
+    }
+  }
+
+  &__barcode {
+    width: 120px;
+    height: 26px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-primary) 0 2px,
+      transparent 2px 4px,
+      var(--color-primary) 4px 7px,
+      transparent 7px 9px
+    );
+  }
+
+  &__scan {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    background: rgb(63 184 113 / 92%);
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    animation: scan-in 0.3s ease-out;
+  }
+
+  &__team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 0 32px;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 120px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgb(255 255 255 / 8%);
+      transition:
+        transform 0.25s ease,
+        background-color 0.25s ease;
+      animation: rise-in 0.5s ease-out backwards;
+      animation-delay: calc(1.4s + var(--order) * 0.25s);
+
+      &:hover {
+        background: rgb(255 255 255 / 14%);
+        transform: translateY(-6px);
+      }
+    }
+
+    small {
+      opacity: 0.7;
+    }
+  }
+
+  // Chaque personnage fait coucou en arrivant.
+  &__avatar {
+    font-size: 2.5rem;
+    transform-origin: 70% 80%;
+    animation: wave 1s ease-in-out backwards;
+    animation-delay: calc(1.6s + var(--order) * 0.25s);
+  }
+
+  &__start {
+    animation:
+      rise-in 0.5s ease-out 2s backwards,
+      pulse 2s ease-in-out 2.5s infinite;
+  }
+
+  &__note {
+    margin-top: 24px;
+    font-size: 0.875rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    & {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@keyframes lanyard-in {
+  from {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+}
+
+@keyframes badge-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-120px) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(0) rotate(10deg);
+  }
+  55% {
+    transform: rotate(-7deg);
+  }
+  72% {
+    transform: rotate(4deg);
+  }
+  86% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes wave {
+  20%,
+  60% {
+    transform: rotate(14deg);
+  }
+  40%,
+  80% {
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 10px rgb(255 107 74 / 0%);
+  }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 107 74 / 45%);
+  }
+}
+
+@keyframes scan-in {
+  from {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}

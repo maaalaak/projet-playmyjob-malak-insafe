@@ -55,7 +55,10 @@ describe('SimulationPage', () => {
     const element: HTMLElement = harness.routeNativeElement!;
     expect(element.querySelector('h1')?.textContent).toContain('Service de gériatrie');
 
-    element.querySelector<HTMLButtonElement>('.simulation__intro button')!.click();
+    vi.useFakeTimers();
+    element.querySelector<HTMLButtonElement>('.day-intro__start')!.click();
+    vi.advanceTimersByTime(1000);
+    vi.useRealTimers();
     harness.detectChanges();
 
     expect(element.textContent).toContain('Le patient de la 304 a de la fièvre.');

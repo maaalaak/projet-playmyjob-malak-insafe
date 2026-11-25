@@ -44,7 +44,9 @@
               [thinking]="sending()"
               [line]="currentLine()"
               [time]="clockTime() ?? '09:00'"
-            />
+            >
+              <app-effect-burst [effects]="lastEffects()" [key]="currentIndex()" />
+            </app-scene-stage>
 
             <app-conversation [messages]="history()" [characters]="simulation.scenario.characters" />
 

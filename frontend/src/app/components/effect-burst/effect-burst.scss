@@ -1,0 +1,163 @@
+// L'effet recouvre la scène sans bloquer les clics, puis disparaît tout seul.
+.effect-burst {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  pointer-events: none;
+  animation: fade-out 0.6s ease-in 2.4s forwards;
+
+  &--good {
+    box-shadow: inset 0 0 60px 10px rgb(63 184 113 / 55%);
+  }
+
+  &--bad {
+    animation:
+      danger 0.5s ease-in-out 3,
+      fade-out 0.6s ease-in 2.4s forwards;
+  }
+
+  &__message {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    margin: 0;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: rgb(20 26 60 / 85%);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 35%);
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    font-weight: 700;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+    animation: message-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+
+    .effect-burst--bad & {
+      animation:
+        message-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards,
+        wobble 0.4s ease-in-out 0.5s 2;
+    }
+  }
+
+  &__sparkle {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: #ffd166;
+    animation: sparkle 0.9s ease-out 0.15s forwards;
+
+    &:nth-child(odd) {
+      background: #3fb871;
+    }
+
+    &:nth-child(3n) {
+      background: var(--color-accent);
+    }
+  }
+
+  &__chips {
+    position: absolute;
+    right: 0;
+    bottom: 30%;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #3fb871;
+    box-shadow: 0 6px 16px rgb(0 0 0 / 30%);
+    color: #ffffff;
+    font-weight: 700;
+    animation: chip-fly 1.8s ease-out backwards;
+    animation-delay: calc(0.3s + var(--order) * 0.12s);
+
+    &--negative {
+      background: var(--color-accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    * {
+      animation: fade-out 0.6s ease-in 2.4s forwards !important;
+    }
+
+    &__sparkle {
+      display: none;
+    }
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes danger {
+  0%,
+  100% {
+    box-shadow: inset 0 0 30px 4px rgb(255 80 60 / 30%);
+  }
+  50% {
+    box-shadow: inset 0 0 70px 16px rgb(255 80 60 / 70%);
+  }
+}
+
+@keyframes message-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+}
+
+@keyframes wobble {
+  25% {
+    transform: translate(-50%, -50%) rotate(-4deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(4deg);
+  }
+}
+
+@keyframes sparkle {
+  from {
+    opacity: 1;
+    transform: rotate(var(--angle)) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateY(-120px) scale(0.4);
+  }
+}
+
+@keyframes chip-fly {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1.1);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1);
+  }
+}

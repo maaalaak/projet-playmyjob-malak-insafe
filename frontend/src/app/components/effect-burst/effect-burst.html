@@ -1,0 +1,20 @@
+<!-- Le @for avec track sur la clé recrée l'effet à chaque réponse, pour rejouer les animations. -->
+@for (burst of bursts(); track burst.key) {
+  <div class="effect-burst effect-burst--{{ burst.verdict }}" aria-hidden="true">
+    <p class="effect-burst__message">{{ burst.message }}</p>
+
+    @if (burst.verdict === 'good') {
+      @for (sparkle of sparkles; track sparkle) {
+        <span class="effect-burst__sparkle" [style.--angle.deg]="sparkle * 36"></span>
+      }
+    }
+
+    <ul class="effect-burst__chips">
+      @for (chip of burst.chips; track chip.key) {
+        <li class="effect-burst__chip" [class.effect-burst__chip--negative]="chip.value < 0" [style.--order]="$index">
+          {{ chip.value > 0 ? '+' : '' }}{{ chip.value }} {{ chip.icon }}
+        </li>
+      }
+    </ul>
+  </div>
+}

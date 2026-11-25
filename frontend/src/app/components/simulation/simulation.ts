@@ -16,6 +16,7 @@ import { httpErrorMessage } from '../../utils/http-error-message';
 import { Conversation } from '../conversation/conversation';
 import { DayClock } from '../day-clock/day-clock';
 import { DayIntro } from '../day-intro/day-intro';
+import { EffectBurst } from '../effect-burst/effect-burst';
 import { ReplyBox } from '../reply-box/reply-box';
 import { SceneStage } from '../scene-stage/scene-stage';
 import { WorkDocument } from '../work-document/work-document';
@@ -23,7 +24,7 @@ import { WorkDocument } from '../work-document/work-document';
 type SimulationStep = 'starting' | 'intro' | 'playing' | 'finishing';
 
 @Component({
-  imports: [ErrorMessage, GaugePanel, Loader, Conversation, DayClock, DayIntro, ReplyBox, SceneStage, WorkDocument],
+  imports: [ErrorMessage, GaugePanel, Loader, Conversation, DayClock, DayIntro, EffectBurst, ReplyBox, SceneStage, WorkDocument],
   selector: 'app-simulation',
   styleUrl: './simulation.scss',
   templateUrl: './simulation.html',
